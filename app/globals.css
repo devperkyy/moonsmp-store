@@ -661,6 +661,43 @@ body {
   clip-path: polygon(50% 0, 92% 24%, 92% 76%, 50% 100%, 8% 76%, 8% 24%);
 }
 
+/* ── mobile: thin the village out so it doesn't pile up ── */
+.wide-deco {
+  display: contents;
+}
+@media (max-width: 768px) {
+  .wide-deco {
+    display: none;
+  }
+  .pixel-moon {
+    width: 52px;
+    height: 52px;
+    top: 8vh;
+    right: 7vw;
+  }
+  .mc-house {
+    transform: scale(0.72);
+    transform-origin: bottom center;
+  }
+  .villager {
+    transform: scale(0.85);
+    transform-origin: bottom center;
+  }
+  .golem {
+    left: 72vw !important; /* the one golem that stays gets a spot that fits */
+    transform: scale(0.85);
+    transform-origin: bottom center;
+  }
+  .mc-tree {
+    transform: scale(0.68);
+    transform-origin: bottom center;
+  }
+  .campfire {
+    transform: translateX(-50%) scale(0.85);
+    transform-origin: bottom center;
+  }
+}
+
 /* ── floating item frame (package art fallback) ── */
 .mc-item-frame {
   position: relative;

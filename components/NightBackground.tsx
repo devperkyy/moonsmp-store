@@ -105,14 +105,16 @@ export default function NightBackground() {
       <div className="mc-mountains mc-mountains-far" />
       <div className="mc-mountains mc-mountains-near" />
 
-      {/* forest */}
+      {/* forest — always at least one tree; the rest are desktop-only */}
       <Tree style={{ left: "17vw" }} />
-      <Tree style={{ left: "23vw" }} small />
-      <Tree style={{ left: "45vw" }} small />
-      <Tree style={{ left: "78vw" }} />
-      <Tree style={{ left: "93vw" }} small />
+      <div className="wide-deco">
+        <Tree style={{ left: "23vw" }} small />
+        <Tree style={{ left: "45vw" }} small />
+        <Tree style={{ left: "78vw" }} />
+        <Tree style={{ left: "93vw" }} small />
+      </div>
 
-      {/* village houses */}
+      {/* village houses — two on mobile, four on desktop */}
       <House
         style={{ left: "4vw" }}
         doorLeft="22px"
@@ -122,11 +124,6 @@ export default function NightBackground() {
         ]}
       />
       <House
-        style={{ left: "27vw", width: "132px", height: "90px" }}
-        doorLeft="14px"
-        windows={[{ left: "78px", top: "30px", delay: "2.1s" }]}
-      />
-      <House
         style={{ right: "4vw" }}
         doorLeft="112px"
         windows={[
@@ -134,27 +131,37 @@ export default function NightBackground() {
           { left: "70px", top: "34px", delay: "2.6s" },
         ]}
       />
-      <House
-        style={{ right: "22vw", width: "124px", height: "86px" }}
-        doorLeft="76px"
-        windows={[{ left: "22px", top: "28px", delay: "1.8s" }]}
-      />
+      <div className="wide-deco">
+        <House
+          style={{ left: "27vw", width: "132px", height: "90px" }}
+          doorLeft="14px"
+          windows={[{ left: "78px", top: "30px", delay: "2.1s" }]}
+        />
+        <House
+          style={{ right: "22vw", width: "124px", height: "86px" }}
+          doorLeft="76px"
+          windows={[{ left: "22px", top: "28px", delay: "1.8s" }]}
+        />
+      </div>
 
       <div className="night-ground" />
 
-      {/* villagers — two trading gossip by the fire, the rest wandering */}
-      <Villager style={{ left: "12vw" }} />
+      {/* villagers — the two gossiping by the fire always show */}
       <Villager style={{ left: "33vw" }} bubble />
-      <Villager style={{ left: "41vw" }} />
       <Villager style={{ left: "59vw", transform: "scaleX(-1)" }} bubble late />
-      <Villager style={{ left: "70vw", transform: "scaleX(-1)" }} />
+      <div className="wide-deco">
+        <Villager style={{ left: "12vw" }} />
+        <Villager style={{ left: "41vw" }} />
+        <Villager style={{ left: "70vw", transform: "scaleX(-1)" }} />
+      </div>
 
-      {/* iron golems on patrol */}
-      <Golem style={{ left: "20vw" }} />
+      {/* iron golems — one on mobile (repositioned by CSS), two on desktop */}
       <Golem style={{ left: "86vw", animationDelay: "2.5s" }} />
-
-      {/* Steve getting wood */}
-      <Steve style={{ left: "75vw" }} />
+      <div className="wide-deco">
+        <Golem style={{ left: "20vw" }} />
+        {/* Steve getting wood */}
+        <Steve style={{ left: "75vw" }} />
+      </div>
 
       <div className="campfire">
         <div className="campfire-glow" />
