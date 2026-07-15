@@ -1,87 +1,48 @@
-// Full-page animated pixel village at night, drawn entirely in CSS:
-// blocky mountain terrain, oak trees, plank houses with flickering windows,
-// villagers bobbing and "talking" (alternating emerald chat bubbles), iron
-// golems on patrol, Steve chopping a tree, and the campfire.
-// When a Higgsfield loop lands in public/background/campfire.mp4, the
-// <video> layer takes over (a missing file renders nothing, so the CSS
-// scene shows through).
-
-function House({
-  style,
-  windows,
-  doorLeft,
-}: {
-  style: React.CSSProperties;
-  windows: { left: string; top: string; delay?: string }[];
-  doorLeft: string;
-}) {
-  return (
-    <div className="mc-house" style={style}>
-      <div className="mc-roof mc-roof-1" />
-      <div className="mc-roof mc-roof-2" />
-      <div className="mc-roof mc-roof-3" />
-      <div className="mc-door" style={{ left: doorLeft }} />
-      {windows.map((w, i) => (
-        <div
-          key={i}
-          className="house-window"
-          style={{ left: w.left, top: w.top, animationDelay: w.delay }}
-        />
-      ))}
-    </div>
-  );
-}
+// Full-page animated Minecraft night scene. Every mob and building is real
+// pixel art: hand-drawn maps in scripts/gen-sprites.mjs compiled to
+// box-shadow sprites (app/sprites.css). Layout/animation lives in
+// globals.css. When a Higgsfield loop lands in public/background/campfire.mp4
+// the <video> layer takes over.
 
 function Villager({
   style,
   bubble,
   late,
+  flip,
 }: {
   style: React.CSSProperties;
   bubble?: boolean;
   late?: boolean;
+  flip?: boolean;
 }) {
   return (
-    <div className="villager" style={style}>
-      {bubble && (
-        <div className={`v-bubble ${late ? "v-bubble-late" : ""}`}>
-          <span className="emerald" />
-        </div>
-      )}
-      <div className="v-head" />
-      <div className="v-body" />
+    <div className="scene-item" style={style}>
+      <div className="spr-villager" style={flip ? { scale: "-1 1" } : undefined}>
+        {bubble && (
+          <div className={`v-bubble ${late ? "v-bubble-late" : ""}`}>
+            <span className="emerald" />
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-function Tree({ style, small }: { style: React.CSSProperties; small?: boolean }) {
+// window glow positions match the lit panes baked into the house sprite
+function House({ style, scale = 1 }: { style: React.CSSProperties; scale?: number }) {
   return (
-    <div className={`mc-tree ${small ? "mc-tree-sm" : ""}`} style={style}>
-      <div className="tree-trunk" />
-      <div className="tree-leaves" />
+    <div className="scene-item spr-house" style={{ ...style, zoom: scale }}>
+      <div className="house-glow" style={{ left: "34px", top: "64px" }} />
+      <div className="house-glow" style={{ left: "118px", top: "64px", animationDelay: "1.6s" }} />
     </div>
   );
 }
 
-function Golem({ style }: { style: React.CSSProperties }) {
+function SteveRig({ style }: { style: React.CSSProperties }) {
   return (
-    <div className="golem" style={style}>
-      <div className="g-head" />
-      <div className="g-arm g-arm-l" />
-      <div className="g-arm g-arm-r" />
-      <div className="g-body" />
-      <div className="g-legs" />
-    </div>
-  );
-}
-
-function Steve({ style }: { style: React.CSSProperties }) {
-  return (
-    <div className="steve" style={style}>
-      <div className="s-head" />
-      <div className="s-body" />
-      <div className="s-legs" />
-      <div className="s-arm" />
+    <div className="steve-rig" style={style}>
+      <div className="spr-steve" />
+      <div className="spr-steve-arm" />
     </div>
   );
 }
@@ -101,71 +62,62 @@ export default function NightBackground() {
       <div className="stars stars-2" />
       <div className="pixel-moon" />
 
-      {/* rough terrain on the horizon */}
+      {/* blocky terrain on the horizon, snow on the far peaks */}
       <div className="mc-mountains mc-mountains-far" />
       <div className="mc-mountains mc-mountains-near" />
 
-      {/* forest — always at least one tree; the rest are desktop-only */}
-      <Tree style={{ left: "17vw" }} />
+      {/* forest — one tree survives on mobile */}
+      <div className="scene-item spr-oak" style={{ left: "8vw" }} />
       <div className="wide-deco">
-        <Tree style={{ left: "23vw" }} small />
-        <Tree style={{ left: "45vw" }} small />
-        <Tree style={{ left: "78vw" }} />
-        <Tree style={{ left: "93vw" }} small />
+        <div className="scene-item spr-oak" style={{ left: "21vw", zoom: 0.8 }} />
+        <div className="scene-item spr-oak" style={{ left: "36vw", zoom: 0.7 }} />
+        <div className="scene-item spr-oak" style={{ left: "67vw", zoom: 0.85 }} />
+        <div className="scene-item spr-oak" style={{ left: "88vw" }} />
+        <div className="scene-item spr-oak" style={{ left: "94vw", zoom: 0.7 }} />
       </div>
 
-      {/* village houses — two on mobile, four on desktop */}
-      <House
-        style={{ left: "4vw" }}
-        doorLeft="22px"
-        windows={[
-          { left: "72px", top: "34px" },
-          { left: "122px", top: "34px", delay: "1.4s" },
-        ]}
-      />
-      <House
-        style={{ right: "4vw" }}
-        doorLeft="112px"
-        windows={[
-          { left: "26px", top: "34px", delay: "0.7s" },
-          { left: "70px", top: "34px", delay: "2.6s" },
-        ]}
-      />
+      {/* houses */}
+      <House style={{ left: "4vw" }} />
       <div className="wide-deco">
-        <House
-          style={{ left: "27vw", width: "132px", height: "90px" }}
-          doorLeft="14px"
-          windows={[{ left: "78px", top: "30px", delay: "2.1s" }]}
-        />
-        <House
-          style={{ right: "22vw", width: "124px", height: "86px" }}
-          doorLeft="76px"
-          windows={[{ left: "22px", top: "28px", delay: "1.8s" }]}
-        />
+        <House style={{ left: "26vw" }} scale={0.75} />
+        <House style={{ right: "3vw" }} scale={0.9} />
       </div>
 
       <div className="night-ground" />
 
-      {/* villagers — the two gossiping by the fire always show */}
-      <Villager style={{ left: "33vw" }} bubble />
-      <Villager style={{ left: "59vw", transform: "scaleX(-1)" }} bubble late />
+      {/* ravine cutting through the ground, lava glowing at the bottom */}
       <div className="wide-deco">
-        <Villager style={{ left: "12vw" }} />
-        <Villager style={{ left: "41vw" }} />
-        <Villager style={{ left: "70vw", transform: "scaleX(-1)" }} />
+        <div className="ravine" style={{ left: "58vw" }} />
       </div>
 
-      {/* iron golems — one on mobile (repositioned by CSS), two on desktop */}
-      <Golem style={{ left: "86vw", animationDelay: "2.5s" }} />
+      {/* crop farm with a water channel */}
       <div className="wide-deco">
-        <Golem style={{ left: "20vw" }} />
-        {/* Steve getting wood */}
-        <Steve style={{ left: "75vw" }} />
+        <div className="scene-item spr-farm" style={{ right: "13vw", bottom: "12.2vh" }} />
+      </div>
+
+      {/* villagers — the two gossiping traders always show */}
+      <Villager style={{ left: "42vw" }} bubble />
+      <Villager style={{ left: "55vw" }} bubble late flip />
+      <div className="wide-deco">
+        <Villager style={{ left: "13vw" }} />
+        <Villager style={{ left: "30vw" }} flip />
+        <Villager style={{ right: "9vw" }} />
+      </div>
+
+      {/* iron golems on patrol */}
+      <div className="scene-item spr-golem golem-spot" style={{ left: "76vw" }} />
+      <div className="wide-deco">
+        <div className="scene-item spr-golem" style={{ left: "17.5vw", animationDelay: "2.5s" }} />
+      </div>
+
+      {/* Steve getting wood (tree at 67vw, axe swings into its trunk) */}
+      <div className="wide-deco">
+        <SteveRig style={{ left: "64.5vw" }} />
       </div>
 
       <div className="campfire">
         <div className="campfire-glow" />
-        <div className="campfire-logs" />
+        <div className="spr-campfire-logs" style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)" }} />
         <div className="flame" />
         <div className="flame flame-inner" />
         <div className="flame flame-core" />

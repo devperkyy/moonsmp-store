@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/set-db.mjs postgres && prisma generate && next build",
+    "build": "node scripts/gen-sprites.mjs && node scripts/set-db.mjs postgres && prisma generate && next build",
+    "gen:sprites": "node scripts/gen-sprites.mjs",
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",

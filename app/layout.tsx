@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Press_Start_2P } from "next/font/google";
 import "./globals.css";
+import "./sprites.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import NightBackground from "@/components/NightBackground";
