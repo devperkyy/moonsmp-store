@@ -1,0 +1,8 @@
+# Base URL of the webstore (no trailing slash).
+api-url: "https://store.moonsmp.org"
+
+# Must match PLUGIN_API_KEY in the webstore's environment variables.
+api-key: "changeme"
+
+# How often to check for new deliveries, in seconds.
+poll-seconds: 10

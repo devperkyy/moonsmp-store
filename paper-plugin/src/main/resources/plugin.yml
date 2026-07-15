@@ -1,0 +1,6 @@
+name: MoonDeliveries
+version: 1.0.0
+main: org.moonsmp.deliveries.MoonDeliveriesPlugin
+api-version: '1.21'
+description: Polls the Moon SMP webstore for paid purchases and runs their delivery commands.
+author: MoonSMP

@@ -1,0 +1,799 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+body {
+  @apply bg-night-900 text-slate-100 antialiased;
+  /* keep content clear of the fixed XP bar */
+  padding-bottom: 16px;
+}
+
+/* ───────────────────────── Minecraft UI kit ─────────────────────────── */
+
+.mc-text-shadow {
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
+}
+
+/* blocky panel — square corners, black outline, inner bevel */
+.mc-panel {
+  background: rgba(9, 14, 27, 0.95);
+  border: 2px solid #000;
+  box-shadow:
+    inset 0 0 0 2px #26314e,
+    6px 6px 0 rgba(0, 0, 0, 0.35);
+}
+
+/* classic MC stone button */
+.mc-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.1rem;
+  font-family: var(--font-pixel), monospace;
+  font-size: 11px;
+  color: #fff;
+  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
+  border: 2px solid #000;
+  background: linear-gradient(to bottom, #8d8d8d 0%, #6c6c6c 100%);
+  box-shadow:
+    inset 2px 2px 0 rgba(255, 255, 255, 0.35),
+    inset -2px -3px 0 rgba(0, 0, 0, 0.4);
+  cursor: pointer;
+  image-rendering: pixelated;
+  transition: filter 0.08s;
+}
+.mc-btn:hover:not(:disabled) {
+  filter: brightness(1.18);
+}
+.mc-btn:active:not(:disabled) {
+  box-shadow:
+    inset -2px -2px 0 rgba(255, 255, 255, 0.2),
+    inset 2px 3px 0 rgba(0, 0, 0, 0.4);
+}
+.mc-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.mc-btn-green {
+  background: linear-gradient(to bottom, #6ec349 0%, #4e9a2e 100%);
+}
+.mc-btn-red {
+  background: linear-gradient(to bottom, #c9524f 0%, #99302d 100%);
+}
+
+/* MC-style input */
+.mc-input {
+  width: 100%;
+  padding: 0.6rem 0.8rem;
+  background: #0a0a0f;
+  border: 2px solid #000;
+  box-shadow: inset 0 0 0 2px #3b465f;
+  color: #fff;
+  outline: none;
+}
+.mc-input:focus {
+  box-shadow: inset 0 0 0 2px #6b8cff;
+}
+
+/* ── scroll XP bar ── */
+.xp-track {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 12px;
+  z-index: 40;
+  background: #141414;
+  border-top: 2px solid #000;
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.07);
+}
+.xp-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(to bottom, #a4f463 0%, #7ada39 45%, #4f9e1d 100%);
+  box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.3);
+}
+.xp-notches {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0 20px,
+    rgba(0, 0, 0, 0.55) 20px 22px
+  );
+}
+.xp-level {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  font-family: var(--font-pixel), monospace;
+  font-size: 11px;
+  color: #80ff20;
+  text-shadow: 2px 2px 0 #000;
+  pointer-events: none;
+}
+
+/* ───────────────────────── Night scene (CSS fallback background) ─────────
+   Pure-CSS pixel campfire village. When /public/background/campfire.mp4
+   exists (Higgsfield loop), the <video> layer renders on top of this. */
+
+.night-scene {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  background: linear-gradient(to bottom, #04060d 0%, #070b17 45%, #0b1226 80%, #101a33 100%);
+}
+
+/* star field via box-shadow scatter */
+.stars {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  box-shadow:
+    8vw 12vh 0 1px #cdd8ff, 22vw 6vh 0 0 #8fa3d9, 31vw 18vh 0 1px #e8eeff,
+    44vw 9vh 0 0 #aab8e8, 57vw 15vh 0 1px #cdd8ff, 66vw 5vh 0 0 #8fa3d9,
+    74vw 20vh 0 1px #e8eeff, 83vw 11vh 0 0 #aab8e8, 91vw 24vh 0 1px #cdd8ff,
+    14vw 28vh 0 0 #8fa3d9, 38vw 30vh 0 1px #aab8e8, 52vw 26vh 0 0 #cdd8ff,
+    69vw 33vh 0 1px #8fa3d9, 88vw 38vh 0 0 #aab8e8, 5vw 40vh 0 1px #cdd8ff,
+    27vw 42vh 0 0 #8fa3d9, 61vw 44vh 0 1px #aab8e8, 95vw 47vh 0 0 #cdd8ff;
+  animation: twinkle 4s ease-in-out infinite alternate;
+}
+
+.stars-2 {
+  box-shadow:
+    12vw 8vh 0 0 #aab8e8, 26vw 14vh 0 1px #cdd8ff, 41vw 4vh 0 0 #8fa3d9,
+    55vw 19vh 0 1px #e8eeff, 71vw 9vh 0 0 #aab8e8, 86vw 16vh 0 1px #cdd8ff,
+    18vw 22vh 0 0 #8fa3d9, 48vw 36vh 0 1px #aab8e8, 79vw 28vh 0 0 #cdd8ff,
+    33vw 46vh 0 1px #8fa3d9, 9vw 34vh 0 0 #e8eeff, 64vw 40vh 0 1px #aab8e8;
+  animation: twinkle 5.5s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.45; }
+  100% { opacity: 1; }
+}
+
+/* blocky moon */
+.pixel-moon {
+  position: absolute;
+  top: 9vh;
+  right: 12vw;
+  width: 84px;
+  height: 84px;
+  background: #dfe6f5;
+  box-shadow: 0 0 48px 18px rgba(190, 205, 245, 0.3);
+  image-rendering: pixelated;
+}
+/* crater pixels, like the banner's moon */
+.pixel-moon::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #aab6d0;
+  box-shadow:
+    34px 18px 0 0 #aab6d0,
+    10px 44px 0 0 #b9c4dd,
+    48px 52px 0 0 #aab6d0,
+    58px 8px 0 0 #b9c4dd,
+    24px 62px 0 0 #c3cde6;
+  top: 10px;
+  left: 12px;
+}
+
+/* grass-topped dirt ground */
+.night-ground {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 13vh;
+  border-top: 3px solid #0e1a0a;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 6px, transparent 6px 18px),
+    linear-gradient(#25391b 0 10px, #241a10 10px 100%);
+}
+
+/* ── blocky mountain terrain behind the village ── */
+.mc-mountains {
+  position: absolute;
+  bottom: 13vh;
+  left: 0;
+  right: 0;
+  height: 36vh;
+  pointer-events: none;
+}
+.mc-mountains-far {
+  background: #0b1424;
+  clip-path: polygon(
+    0 100%, 0 62%, 5% 62%, 5% 48%, 10% 48%, 10% 38%, 16% 38%, 16% 52%,
+    22% 52%, 22% 30%, 27% 30%, 27% 22%, 33% 22%, 33% 40%, 40% 40%, 40% 55%,
+    48% 55%, 48% 45%, 55% 45%, 55% 60%, 63% 60%, 63% 35%, 70% 35%, 70% 25%,
+    76% 25%, 76% 45%, 84% 45%, 84% 58%, 92% 58%, 92% 50%, 100% 50%, 100% 100%
+  );
+}
+.mc-mountains-near {
+  background: #080f1c;
+  clip-path: polygon(
+    0 100%, 0 75%, 8% 75%, 8% 60%, 15% 60%, 15% 70%, 25% 70%, 25% 55%,
+    34% 55%, 34% 68%, 45% 68%, 45% 80%, 58% 80%, 58% 62%, 68% 62%, 68% 72%,
+    80% 72%, 80% 58%, 90% 58%, 90% 70%, 100% 70%, 100% 100%
+  );
+}
+
+/* ── blocky oak tree ── */
+.mc-tree {
+  position: absolute;
+  bottom: 13vh;
+  width: 56px;
+  height: 100px;
+  transform-origin: bottom center;
+}
+.mc-tree-sm {
+  transform: scale(0.72);
+}
+.tree-trunk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 14px;
+  height: 48px;
+  background: #33200f;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+}
+.tree-leaves {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 52px;
+  height: 52px;
+  background: #163012;
+  border: 3px solid #0d1f0b;
+  box-shadow:
+    inset 0 0 0 4px #1c3d16,
+    -18px 22px 0 -8px #163012,
+    18px 22px 0 -8px #163012;
+}
+
+/* ── Steve chopping a tree ── */
+.steve {
+  position: absolute;
+  bottom: 13vh;
+  width: 36px;
+  height: 74px;
+}
+.s-head {
+  position: absolute;
+  top: 0;
+  left: 8px;
+  width: 20px;
+  height: 20px;
+  background: #c48d63;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+}
+.s-head::before {
+  /* hair */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #4a3120;
+}
+.s-head::after {
+  /* eye (side profile) */
+  content: "";
+  position: absolute;
+  top: 8px;
+  right: 2px;
+  width: 3px;
+  height: 3px;
+  background: #523d8f;
+  box-shadow: -1px 0 0 #fff;
+}
+.s-body {
+  position: absolute;
+  top: 20px;
+  left: 8px;
+  width: 20px;
+  height: 24px;
+  background: #0e9a93;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.s-legs {
+  position: absolute;
+  top: 44px;
+  left: 8px;
+  width: 20px;
+  height: 26px;
+  background: #3d3c8f;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.s-legs::before {
+  /* shoes */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 5px;
+  background: #6e6e6e;
+}
+.s-legs::after {
+  /* leg gap */
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 3px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.s-arm {
+  position: absolute;
+  top: 21px;
+  left: 23px;
+  width: 9px;
+  height: 24px;
+  background: #0e9a93;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+  transform-origin: 50% 4px;
+  animation: s-chop 0.9s ease-in-out infinite;
+}
+.s-arm::before {
+  /* axe handle */
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 2px;
+  width: 5px;
+  height: 18px;
+  background: #6b4423;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
+.s-arm::after {
+  /* axe head */
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 5px;
+  width: 10px;
+  height: 8px;
+  background: #9ea3a8;
+  border: 1px solid rgba(0, 0, 0, 0.6);
+}
+@keyframes s-chop {
+  0%, 100% { transform: rotate(-78deg); }
+  45% { transform: rotate(6deg); }
+  60% { transform: rotate(2deg); }
+}
+
+/* ── iron golem ── */
+.golem {
+  position: absolute;
+  bottom: 13vh;
+  width: 58px;
+  height: 92px;
+  transform-origin: bottom center;
+  animation: g-sway 5s ease-in-out infinite;
+}
+.g-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 15px;
+  background: #c0b8a8;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.g-head::before {
+  /* deep-set eyes */
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 2px;
+  width: 3px;
+  height: 3px;
+  background: #7c2f24;
+  box-shadow: 8px 0 0 #7c2f24;
+}
+.g-head::after {
+  /* long nose */
+  content: "";
+  position: absolute;
+  top: 7px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 5px;
+  height: 10px;
+  background: #a89f8e;
+  border: 1px solid rgba(0, 0, 0, 0.4);
+}
+.g-body {
+  position: absolute;
+  top: 15px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 34px;
+  background: #b5ad9c;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.g-body::before {
+  /* vines */
+  content: "";
+  position: absolute;
+  top: 6px;
+  left: 5px;
+  width: 4px;
+  height: 4px;
+  background: #3f6b2e;
+  box-shadow: 4px 6px 0 #3f6b2e, 22px 14px 0 #3f6b2e;
+}
+.g-arm {
+  position: absolute;
+  top: 13px;
+  width: 11px;
+  height: 46px;
+  background: #a89f8e;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.g-arm-l { left: -3px; }
+.g-arm-r { right: -3px; }
+.g-legs {
+  position: absolute;
+  top: 49px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 34px;
+}
+.g-legs::before,
+.g-legs::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 12px;
+  background: #aaa192;
+  border: 2px solid rgba(0, 0, 0, 0.5);
+}
+.g-legs::before { left: 0; }
+.g-legs::after { right: 0; }
+@keyframes g-sway {
+  0%, 100% { transform: rotate(-0.8deg); }
+  50% { transform: rotate(0.8deg); }
+}
+
+/* ── pixel plank house ── */
+.mc-house {
+  position: absolute;
+  bottom: 13vh;
+  width: 170px;
+  height: 108px;
+  border: 3px solid #120d08;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 3px, transparent 3px 26px),
+    repeating-linear-gradient(0deg, #3b2b1a 0 13px, #322313 13px 26px);
+  box-shadow: 0 0 44px rgba(0, 0, 0, 0.55);
+}
+.mc-roof {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 16px;
+  border: 3px solid #120d08;
+  background: repeating-linear-gradient(90deg, #241a10 0 20px, #2b2013 20px 40px);
+}
+.mc-roof-1 { top: -19px; width: calc(100% + 40px); }
+.mc-roof-2 { top: -35px; width: calc(100% - 20px); }
+.mc-roof-3 { top: -51px; width: calc(100% - 84px); }
+
+.mc-door {
+  position: absolute;
+  bottom: 0;
+  width: 30px;
+  height: 54px;
+  background:
+    linear-gradient(#0a0603, #0a0603) 50% 12px / 10px 10px no-repeat,
+    linear-gradient(#2a1c0e, #221608);
+  border: 3px solid #120d08;
+  border-bottom: none;
+}
+
+.house-window {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background-color: #ffb454;
+  background-image:
+    linear-gradient(#120d08, #120d08),
+    linear-gradient(#120d08, #120d08);
+  background-size: 2px 100%, 100% 2px;
+  background-position: center, center;
+  background-repeat: no-repeat;
+  border: 3px solid #120d08;
+  box-shadow: 0 0 16px 4px rgba(255, 160, 60, 0.35);
+  animation: window-flicker 3.4s steps(2) infinite;
+}
+@keyframes window-flicker {
+  0%, 78% { opacity: 1; }
+  82% { opacity: 0.55; }
+  86%, 100% { opacity: 0.9; }
+}
+
+/* ── villagers ── */
+.villager {
+  position: absolute;
+  bottom: 13vh;
+  width: 40px;
+  height: 72px;
+}
+.v-head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28px;
+  height: 28px;
+  background: #b08155;
+  border: 2px solid rgba(0, 0, 0, 0.6);
+  animation: v-bob 2.8s steps(2) infinite;
+}
+.v-head::before {
+  /* unibrow + green eyes */
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: 3px;
+  width: 5px;
+  height: 4px;
+  background: #2c5e2e;
+  box-shadow: 13px 0 0 #2c5e2e, 0 -4px 0 #6b4a2c, 13px -4px 0 #6b4a2c, 5px -4px 0 #6b4a2c, 9px -4px 0 #6b4a2c;
+}
+.v-head::after {
+  /* the nose */
+  content: "";
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 15px;
+  background: #9a6b42;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+}
+.v-body {
+  position: absolute;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 34px;
+  height: 44px;
+  background: #4f3c28;
+  border: 2px solid rgba(0, 0, 0, 0.55);
+}
+.v-body::before {
+  /* folded arms */
+  content: "";
+  position: absolute;
+  top: 9px;
+  left: -4px;
+  right: -4px;
+  height: 11px;
+  background: #43331f;
+  border: 2px solid rgba(0, 0, 0, 0.45);
+}
+.v-body::after {
+  /* robe slit */
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 16px;
+  background: rgba(0, 0, 0, 0.4);
+}
+@keyframes v-bob {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(-2px); }
+}
+
+/* floating chat bubble with an emerald — two villagers alternate talking */
+.v-bubble {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f7f7f2;
+  border: 3px solid #111;
+  opacity: 0;
+  animation: bubble-talk 8s ease-in-out infinite;
+}
+.v-bubble::after {
+  /* speech tail */
+  content: "";
+  position: absolute;
+  top: calc(100% - 4px);
+  left: 10px;
+  width: 10px;
+  height: 10px;
+  background: #f7f7f2;
+  border-right: 3px solid #111;
+  border-bottom: 3px solid #111;
+  transform: rotate(45deg);
+}
+.v-bubble-late {
+  animation-delay: 4s;
+}
+@keyframes bubble-talk {
+  0%, 6% { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  10%, 40% { opacity: 1; transform: translateX(-50%) translateY(0); }
+  44%, 100% { opacity: 0; transform: translateX(-50%) translateY(-6px); }
+}
+
+/* the emerald inside the bubble */
+.emerald {
+  width: 18px;
+  height: 20px;
+  background: linear-gradient(135deg, #a5f7b6 0%, #41e079 40%, #0da84e 72%, #076b33 100%);
+  clip-path: polygon(50% 0, 92% 24%, 92% 76%, 50% 100%, 8% 76%, 8% 24%);
+}
+
+/* ── floating item frame (package art fallback) ── */
+.mc-item-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background:
+    repeating-conic-gradient(rgba(255, 255, 255, 0.022) 0% 25%, transparent 0% 50%) 0 0 / 44px 44px,
+    linear-gradient(180deg, #141d33 0%, #0d1424 100%);
+  border: 2px solid #000;
+  box-shadow: inset 0 0 0 2px #26314e;
+}
+.mc-item-frame::after {
+  /* grass strip along the bottom */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 16%;
+  border-top: 3px solid #0e1a0a;
+  background:
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 6px, transparent 6px 18px),
+    linear-gradient(#25391b 0 9px, #241a10 9px 100%);
+}
+.mc-item {
+  position: relative;
+  z-index: 1;
+  animation: item-bob 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 5px 0 rgba(0, 0, 0, 0.4));
+}
+.mc-item-shadow {
+  position: absolute;
+  bottom: 13%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 38%;
+  height: 10px;
+  border-radius: 9999px;
+  background: rgba(0, 0, 0, 0.55);
+  filter: blur(3px);
+  animation: item-shadow 2.6s ease-in-out infinite;
+}
+@keyframes item-bob {
+  0%, 100% { transform: translateY(-9px); }
+  50% { transform: translateY(7px); }
+}
+@keyframes item-shadow {
+  0%, 100% { transform: translateX(-50%) scaleX(1); opacity: 0.5; }
+  50% { transform: translateX(-50%) scaleX(0.72); opacity: 0.85; }
+}
+
+/* ── campfire ── */
+.campfire {
+  position: absolute;
+  bottom: 13vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 80px;
+}
+
+.campfire-glow {
+  position: absolute;
+  bottom: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 340px;
+  height: 150px;
+  background: radial-gradient(ellipse at center bottom, rgba(255, 140, 43, 0.34) 0%, rgba(255, 110, 30, 0.14) 45%, transparent 70%);
+  animation: glow-pulse 2.4s ease-in-out infinite;
+}
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.85; transform: translateX(-50%) scale(1); }
+  50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+}
+
+.campfire-logs {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 10px;
+  background: #2b1a10;
+  box-shadow: -8px -6px 0 0 #22140c, 10px -6px 0 0 #332012;
+}
+
+/* blocky flame, two-frame steps() jitter like MC fire */
+.flame {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 46px;
+  background: #ff6a1a;
+  clip-path: polygon(50% 0, 66% 22%, 84% 34%, 78% 58%, 100% 70%, 88% 100%, 12% 100%, 0 70%, 22% 58%, 16% 34%, 34% 22%);
+  animation: flame-jitter 0.55s steps(2) infinite;
+}
+.flame-inner {
+  width: 20px;
+  height: 30px;
+  bottom: 8px;
+  background: #ffb454;
+  animation-duration: 0.4s;
+}
+.flame-core {
+  width: 10px;
+  height: 16px;
+  bottom: 9px;
+  background: #ffe9a3;
+  animation-duration: 0.3s;
+}
+@keyframes flame-jitter {
+  0%, 100% { transform: translateX(-50%) scaleY(1); }
+  50% { transform: translateX(-52%) scaleY(0.92) scaleX(1.06); }
+}
+
+/* rising embers */
+.ember {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #ffb454;
+  opacity: 0;
+  animation: ember-rise 3.2s linear infinite;
+}
+@keyframes ember-rise {
+  0% { opacity: 0; transform: translate(0, 0); }
+  12% { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--drift, 12px), -46vh); }
+}

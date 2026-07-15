@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// A purchasable package. commandTemplate is admin-editable: one console
+// command per line, with {username} substituted at delivery time.
+model Package {
+  id              String   @id // slug, e.g. "star", "vote-key"
+  name            String
+  description     String   @default("")
+  category        String // "ranks" | "crates"
+  priceCents      Int
+  currency        String   @default("cad")
+  commandTemplate String
+  sortOrder       Int      @default(0)
+  active          Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  orders          Order[]
+  reviews         Review[]
+}
+
+model Order {
+  id                String     @id @default(cuid())
+  stripeSessionId   String     @unique
+  packageId         String
+  package           Package    @relation(fields: [packageId], references: [id])
+  username          String // as typed by the buyer
+  platform          String // "java" | "bedrock"
+  effectiveUsername String // normalized; "." Floodgate prefix applied for bedrock
+  email             String?
+  quantity          Int        @default(1)
+  amountCents       Int
+  currency          String
+  status            String     @default("paid")
+  createdAt         DateTime   @default(now())
+  deliveries        Delivery[]
+}
+
+// One row per rendered command. The Paper plugin claims pending rows,
+// executes them in-game, and reports back.
+model Delivery {
+  id          String            @id @default(cuid())
+  orderId     String
+  order       Order             @relation(fields: [orderId], references: [id])
+  command     String
+  status      String            @default("pending") // pending | processing | delivered | failed
+  attempts    Int               @default(0)
+  claimedAt   DateTime?
+  executedAt  DateTime?
+  lastError   String?
+  createdAt   DateTime          @default(now())
+  attemptLogs DeliveryAttempt[]
+
+  @@index([status, createdAt])
+}
+
+// Storefront reviews shown on package detail pages.
+model Review {
+  id        String   @id @default(cuid())
+  packageId String
+  package   Package  @relation(fields: [packageId], references: [id])
+  author    String
+  rating    Int // 1-5
+  comment   String   @default("")
+  createdAt DateTime @default(now())
+}
+
+// Full audit trail: one row per execution attempt, success or fail.
+model DeliveryAttempt {
+  id         String   @id @default(cuid())
+  deliveryId String
+  delivery   Delivery @relation(fields: [deliveryId], references: [id])
+  success    Boolean
+  response   String?
+  createdAt  DateTime @default(now())
+}
