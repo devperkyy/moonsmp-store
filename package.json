@@ -8,7 +8,7 @@
     "gen:sprites": "node scripts/gen-sprites.mjs",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate",
+    "postinstall": "node scripts/set-db.mjs postgres && prisma generate",
     "db:local": "node scripts/set-db.mjs sqlite && prisma db push && prisma generate && tsx prisma/seed.ts",
     "db:push": "prisma db push",
     "db:seed": "tsx prisma/seed.ts"
