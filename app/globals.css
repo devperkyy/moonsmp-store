@@ -204,39 +204,28 @@ body {
     linear-gradient(#25391b 0 10px, #241a10 10px 100%);
 }
 
-/* ── blocky mountain terrain behind the village ── */
+/* ── blocky mountain terrain behind the village ──
+   clip-path is generated per-instance by lib/terrain.ts (a stepped height
+   profile) and applied inline; this class only carries position + fill. */
 .mc-mountains {
   position: absolute;
-  bottom: 13vh;
   left: 0;
   right: 0;
-  height: 36vh;
   pointer-events: none;
 }
-/* far range: snow-capped stone — the gradient bands read as snow line and
-   strata, the pixel grid makes the slopes look built from blocks */
 .mc-mountains-far {
-  background-image:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.16) 0 2px, transparent 2px 14px),
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 14px),
-    linear-gradient(180deg, #7d8ea8 0%, #7d8ea8 7%, #46536b 7%, #46536b 15%, #2a3852 15%, #17233a 55%, #0d1626 100%);
-  clip-path: polygon(
-    0 100%, 0 62%, 5% 62%, 5% 48%, 10% 48%, 10% 38%, 16% 38%, 16% 52%,
-    22% 52%, 22% 30%, 27% 30%, 27% 22%, 33% 22%, 33% 40%, 40% 40%, 40% 55%,
-    48% 55%, 48% 45%, 55% 45%, 55% 60%, 63% 60%, 63% 35%, 70% 35%, 70% 25%,
-    76% 25%, 76% 45%, 84% 45%, 84% 58%, 92% 58%, 92% 50%, 100% 50%, 100% 100%
-  );
+  bottom: 15vh;
+  height: 20vh;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 16px),
+    linear-gradient(180deg, #93a5c4 0%, #93a5c4 10%, #5b6c8c 10%, #5b6c8c 100%);
 }
 .mc-mountains-near {
-  background-image:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.2) 0 2px, transparent 2px 12px),
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 12px),
-    linear-gradient(180deg, #1d2a40 0%, #131e30 40%, #0a1220 100%);
-  clip-path: polygon(
-    0 100%, 0 75%, 8% 75%, 8% 60%, 15% 60%, 15% 70%, 25% 70%, 25% 55%,
-    34% 55%, 34% 68%, 45% 68%, 45% 80%, 58% 80%, 58% 62%, 68% 62%, 68% 72%,
-    80% 72%, 80% 58%, 90% 58%, 90% 70%, 100% 70%, 100% 100%
-  );
+  bottom: 13vh;
+  height: 16vh;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, #2c3a56 0%, #1a2438 60%, #0f1725 100%);
 }
 
 /* ── sprite placement + idle animations ──

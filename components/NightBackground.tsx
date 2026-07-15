@@ -3,6 +3,12 @@
 // box-shadow sprites (app/sprites.css). Layout/animation lives in
 // globals.css. When a Higgsfield loop lands in public/background/campfire.mp4
 // the <video> layer takes over.
+import { terrainClipPath } from "@/lib/terrain";
+
+// Height profiles (0 = ground, 1 = full band height) with real valleys
+// dipping toward the ground — without dips it renders as one solid slab.
+const FAR_RIDGE = [0.2, 0.45, 0.7, 0.5, 0.15, 0.35, 0.65, 0.85, 0.6, 0.3, 0.5, 0.75, 0.4, 0.1];
+const NEAR_RIDGE = [0.35, 0.15, 0.6, 0.4, 0.75, 0.5, 0.2, 0.55, 0.85, 0.45, 0.1, 0.3];
 
 function Villager({
   style,
@@ -62,9 +68,16 @@ export default function NightBackground() {
       <div className="stars stars-2" />
       <div className="pixel-moon" />
 
-      {/* blocky terrain on the horizon, snow on the far peaks */}
-      <div className="mc-mountains mc-mountains-far" />
-      <div className="mc-mountains mc-mountains-near" />
+      {/* blocky stepped terrain on the horizon, sitting behind the village
+          as a backdrop rather than overlapping it */}
+      <div
+        className="mc-mountains mc-mountains-far"
+        style={{ clipPath: terrainClipPath(FAR_RIDGE) }}
+      />
+      <div
+        className="mc-mountains mc-mountains-near"
+        style={{ clipPath: terrainClipPath(NEAR_RIDGE) }}
+      />
 
       {/* forest — one tree survives on mobile */}
       <div className="scene-item spr-oak" style={{ left: "8vw" }} />
