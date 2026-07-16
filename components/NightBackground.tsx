@@ -1,7 +1,8 @@
-// Full-page animated Minecraft night scene. Every mob and building is real
-// pixel art: hand-drawn maps in scripts/gen-sprites.mjs compiled to
-// box-shadow sprites (app/sprites.css). Layout/animation lives in
-// globals.css. When a Higgsfield loop lands in public/background/campfire.mp4
+// Full-page animated Minecraft scene. Every mob and building is real pixel
+// art: hand-drawn maps in scripts/gen-sprites.mjs compiled to box-shadow
+// sprites (app/sprites.css). Layout/animation lives in globals.css.
+// DayNightScroll ties the sun/moon and overall lighting to scroll
+// position. When a Higgsfield loop lands in public/background/campfire.mp4
 // the <video> layer takes over.
 import { terrainClipPath } from "@/lib/terrain";
 
@@ -16,8 +17,7 @@ const NEAR_RIDGE = [0.35, 0.15, 0.6, 0.4, 0.75, 0.5, 0.2, 0.55, 0.85, 0.45, 0.1,
 // *separate* elements. Combining them on one <div> lets CSS source order
 // decide which `position` wins — sprites.css loads after globals.css, so
 // `relative` silently clobbers `absolute` and the element falls into normal
-// document flow (this is what caused the floating/misplaced sprites).
-// This wrapper keeps positioning and sprite rendering structurally apart.
+// document flow (this caused floating/misplaced sprites once already).
 function Placed({
   positionStyle,
   spriteClass,
@@ -38,22 +38,39 @@ function Placed({
   );
 }
 
+type Profession = "farmer" | "librarian" | "priest";
+const PROFESSION_CLASS: Record<Profession, string> = {
+  farmer: "",
+  librarian: "v-librarian",
+  priest: "v-priest",
+};
+
 function Villager({
   style,
+  profession = "farmer",
   bubble,
+  curious,
   late,
   flip,
 }: {
   style: React.CSSProperties;
-  bubble?: boolean;
+  profession?: Profession;
+  bubble?: boolean; // trades an emerald with the other gossiping villager
+  curious?: boolean; // "?" bubble — reacting to something nearby (e.g. Steve's find)
   late?: boolean;
   flip?: boolean;
 }) {
+  const spriteClass = `spr-villager ${PROFESSION_CLASS[profession]}`.trim();
   return (
-    <Placed positionStyle={style} spriteClass="spr-villager" spriteStyle={flip ? { scale: "-1 1" } : undefined}>
+    <Placed positionStyle={style} spriteClass={spriteClass} spriteStyle={flip ? { scale: "-1 1" } : undefined}>
       {bubble && (
         <div className={`v-bubble ${late ? "v-bubble-late" : ""}`}>
           <span className="emerald" />
+        </div>
+      )}
+      {curious && (
+        <div className="v-bubble">
+          <span className="curious-mark">?</span>
         </div>
       )}
     </Placed>
@@ -90,11 +107,12 @@ function Golem({
   );
 }
 
+// Standing, holding a single emerald up — no chopping, no tree needed.
 function SteveRig({ style }: { style: React.CSSProperties }) {
   return (
     <div className="steve-rig" style={style}>
       <div className="spr-steve" />
-      <div className="spr-steve-arm" />
+      <span className="steve-emerald emerald" />
     </div>
   );
 }
@@ -110,8 +128,12 @@ export default function NightBackground() {
 
   return (
     <div className="night-scene" aria-hidden="true">
+      {/* day sky fades out as the page scrolls toward "night" (DayNightScroll) */}
+      <div className="day-sky" />
+
       <div className="stars" />
       <div className="stars stars-2" />
+      <div className="pixel-sun" />
       <div className="pixel-moon" />
 
       {/* blocky stepped terrain on the horizon, sitting behind the village
@@ -125,21 +147,19 @@ export default function NightBackground() {
         style={{ clipPath: terrainClipPath(NEAR_RIDGE) }}
       />
 
-      {/* forest — one tree survives on mobile */}
-      <Tree style={{ left: "8vw" }} />
+      {/* forest — kept sparse; one tree survives on mobile */}
+      <Tree style={{ left: "6vw" }} />
       <div className="wide-deco">
-        <Tree style={{ left: "21vw" }} zoom={0.8} />
-        <Tree style={{ left: "36vw" }} zoom={0.7} />
-        <Tree style={{ left: "67vw" }} zoom={0.85} />
-        <Tree style={{ left: "88vw" }} />
-        <Tree style={{ left: "94vw" }} zoom={0.7} />
+        <Tree style={{ left: "35vw" }} zoom={0.75} />
+        <Tree style={{ left: "63vw" }} zoom={0.85} />
+        <Tree style={{ left: "92vw" }} zoom={0.7} />
       </div>
 
       {/* houses */}
-      <House style={{ left: "4vw" }} />
+      <House style={{ left: "3vw" }} />
+      <House style={{ right: "4vw" }} />
       <div className="wide-deco">
-        <House style={{ left: "26vw" }} scale={0.75} />
-        <House style={{ right: "3vw" }} scale={0.9} />
+        <House style={{ left: "42vw" }} scale={0.75} />
       </div>
 
       <div className="night-ground" />
@@ -151,27 +171,27 @@ export default function NightBackground() {
 
       {/* crop farm with a water channel */}
       <div className="wide-deco">
-        <Placed positionStyle={{ right: "13vw", bottom: "12.2vh" }} spriteClass="spr-farm" />
+        <Placed positionStyle={{ right: "16vw", bottom: "12.2vh" }} spriteClass="spr-farm" />
       </div>
 
-      {/* villagers — the two gossiping traders always show */}
-      <Villager style={{ left: "42vw" }} bubble />
-      <Villager style={{ left: "55vw" }} bubble late flip />
+      {/* villagers — the two gossiping traders always show, spread wide so
+          they don't crowd the center */}
+      <Villager style={{ left: "18vw" }} profession="farmer" bubble />
+      <Villager style={{ right: "14vw" }} profession="librarian" bubble late flip />
       <div className="wide-deco">
-        <Villager style={{ left: "13vw" }} />
-        <Villager style={{ left: "30vw" }} flip />
-        <Villager style={{ right: "9vw" }} />
+        <Villager style={{ left: "30vw" }} profession="farmer" />
+        <Villager style={{ left: "46vw" }} profession="priest" curious flip />
       </div>
 
-      {/* iron golems on patrol */}
+      {/* iron golems on patrol, spread to opposite edges */}
       <Golem style={{ left: "76vw" }} spot />
       <div className="wide-deco">
-        <Golem style={{ left: "17.5vw" }} animationDelay="2.5s" />
+        <Golem style={{ left: "12vw" }} animationDelay="2.5s" />
       </div>
 
-      {/* Steve getting wood (tree at 67vw, axe swings into its trunk) */}
+      {/* Steve, showing off an emerald he found */}
       <div className="wide-deco">
-        <SteveRig style={{ left: "64.5vw" }} />
+        <SteveRig style={{ left: "52vw" }} />
       </div>
 
       <div className="campfire">

@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import NightBackground from "@/components/NightBackground";
 import UsernameGate from "@/components/UsernameGate";
 import XpBar from "@/components/XpBar";
+import DayNightScroll from "@/components/DayNightScroll";
 
 const pixel = Press_Start_2P({
   weight: "400",
@@ -34,6 +35,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <main className="flex-1">{children}</main>
         <Footer />
         <XpBar />
+        <DayNightScroll />
       </body>
     </html>
   );

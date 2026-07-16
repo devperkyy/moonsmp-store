@@ -40,9 +40,12 @@ body {
   text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
   border: 2px solid #000;
   background: linear-gradient(to bottom, #8d8d8d 0%, #6c6c6c 100%);
+  /* campfire-warm halo that grows as the page scrolls toward "night" —
+     --night-glow (0..1) is set on <html> by DayNightScroll */
   box-shadow:
     inset 2px 2px 0 rgba(255, 255, 255, 0.35),
-    inset -2px -3px 0 rgba(0, 0, 0, 0.4);
+    inset -2px -3px 0 rgba(0, 0, 0, 0.4),
+    0 0 14px rgba(255, 165, 60, calc(var(--night-glow, 0) * 0.55));
   cursor: pointer;
   image-rendering: pixelated;
   transition: filter 0.08s;
@@ -53,7 +56,8 @@ body {
 .mc-btn:active:not(:disabled) {
   box-shadow:
     inset -2px -2px 0 rgba(255, 255, 255, 0.2),
-    inset 2px 3px 0 rgba(0, 0, 0, 0.4);
+    inset 2px 3px 0 rgba(0, 0, 0, 0.4),
+    0 0 14px rgba(255, 165, 60, calc(var(--night-glow, 0) * 0.55));
 }
 .mc-btn:disabled {
   opacity: 0.45;
@@ -133,6 +137,16 @@ body {
   background: linear-gradient(to bottom, #04060d 0%, #070b17 45%, #0b1226 80%, #101a33 100%);
 }
 
+/* day sky, layered over the night gradient. DayNightScroll fades this out
+   as the page scrolls down, so the base night-scene gradient shows through
+   by the bottom of the page. */
+.day-sky {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, #4a7fc9 0%, #6fa0d8 40%, #e8a866 78%, #f4c988 100%);
+  opacity: 1;
+}
+
 /* star field via box-shadow scatter */
 .stars {
   position: absolute;
@@ -191,6 +205,34 @@ body {
   left: 12px;
 }
 
+/* blocky sun — DayNightScroll swaps top/opacity with the moon on scroll.
+   Hidden by default (pre-JS) since the site's base look is nighttime. */
+.pixel-sun {
+  position: absolute;
+  top: 70vh;
+  right: 12vw;
+  width: 84px;
+  height: 84px;
+  background: #ffd25c;
+  box-shadow: 0 0 60px 26px rgba(255, 190, 90, 0.45);
+  image-rendering: pixelated;
+  opacity: 0;
+}
+.pixel-sun::before {
+  /* warm inner blocks, like the moon's craters but brighter */
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: #ffe28a;
+  box-shadow:
+    34px 18px 0 0 #ffe28a,
+    10px 44px 0 0 #fff0b8,
+    48px 52px 0 0 #ffe28a;
+  top: 10px;
+  left: 12px;
+}
+
 /* grass-topped dirt ground */
 .night-ground {
   position: absolute;
@@ -214,18 +256,18 @@ body {
   pointer-events: none;
 }
 .mc-mountains-far {
-  bottom: 15vh;
-  height: 20vh;
+  bottom: 16vh;
+  height: 24vh;
   background:
     repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.14) 0 2px, transparent 2px 16px),
-    linear-gradient(180deg, #93a5c4 0%, #93a5c4 10%, #5b6c8c 10%, #5b6c8c 100%);
+    linear-gradient(180deg, #c3d2ea 0%, #c3d2ea 8%, #9db0cf 8%, #9db0cf 22%, #64789e 22%, #64789e 100%);
 }
 .mc-mountains-near {
   bottom: 13vh;
-  height: 16vh;
+  height: 18vh;
   background:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 2px, transparent 2px 14px),
-    linear-gradient(180deg, #2c3a56 0%, #1a2438 60%, #0f1725 100%);
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.24) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, #34456a 0%, #1a2438 55%, #0d1524 100%);
 }
 
 /* ── sprite placement + idle animations ──
@@ -237,6 +279,14 @@ body {
 .spr-villager {
   animation: v-bob 2.8s steps(2) infinite;
 }
+/* profession robe colors — shifted via filter rather than new sprites.
+   .v-farmer is the default earthy brown, unfiltered. */
+.v-librarian {
+  filter: grayscale(0.7) brightness(1.5) contrast(0.85);
+}
+.v-priest {
+  filter: hue-rotate(270deg) saturate(1.7) brightness(0.9);
+}
 .spr-golem {
   transform-origin: bottom center;
   animation: g-sway 5s ease-in-out infinite;
@@ -246,33 +296,13 @@ body {
   50% { transform: rotate(0.8deg); }
 }
 
-/* Steve rig: body sprite + a separate arm sprite that swings the axe.
-   The arm is drawn hanging down; positive rotation from the shoulder
-   raises it up behind him, negative brings it down into the trunk. */
+/* Steve rig: just the body sprite, standing, holding an emerald up
+   (.steve-emerald) — no swinging arm. */
 .steve-rig {
   position: absolute;
   bottom: 13vh;
   width: 40px;
   height: 96px;
-}
-.steve-rig .spr-steve-arm {
-  position: absolute;
-  top: 34px;
-  left: 18px;
-  transform-origin: 10px 6px;
-  animation: s-chop 1s ease-in-out infinite;
-}
-/* Arm hangs down at 0deg; the sprite's axe head sits to its right at rest.
-   Most of the cycle keeps the arm low/forward so the swing reads as
-   chopping DOWN, not as slowly raising back up — the raised wind-up is
-   brief and the recovery eases straight back to the resting pose instead
-   of lingering up top. */
-@keyframes s-chop {
-  0%    { transform: rotate(15deg); }   /* resting, hangs down-forward */
-  8%    { transform: rotate(100deg); }  /* quick raise behind his head */
-  24%   { transform: rotate(-55deg); }  /* strike — chops into the trunk */
-  40%   { transform: rotate(-40deg); }  /* brief dwell in the wood */
-  100%  { transform: rotate(15deg); }   /* eases back to resting */
 }
 
 /* ── ravine: a crack in the ground with lava glowing at the bottom ── */
@@ -370,6 +400,26 @@ body {
   height: 20px;
   background: linear-gradient(135deg, #a5f7b6 0%, #41e079 40%, #0da84e 72%, #076b33 100%);
   clip-path: polygon(50% 0, 92% 24%, 92% 76%, 50% 100%, 8% 76%, 8% 24%);
+}
+
+/* curious villagers get a "?" instead of an emerald in their bubble */
+.curious-mark {
+  font-family: var(--font-pixel), monospace;
+  font-size: 16px;
+  color: #2b2b2b;
+}
+
+/* Steve holds a single emerald up rather than swinging an axe — a small
+   idle bob instead of the old chopping animation. */
+.steve-emerald {
+  position: absolute;
+  top: 30px;
+  left: 27px;
+  animation: steve-emerald-bob 2.2s ease-in-out infinite;
+}
+@keyframes steve-emerald-bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
 }
 
 /* ── mobile: thin the village out so it doesn't pile up ── */
