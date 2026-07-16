@@ -14,11 +14,13 @@ export default async function RanksPage() {
   return (
     <div className="mx-auto max-w-6xl px-4 pt-14">
       <h1 className="mc-text-shadow font-pixel text-2xl text-white">Ranks</h1>
-      <p className="mt-2 max-w-2xl text-slate-400">
-        Permanent server ranks. Perks apply on Java and Bedrock alike — just pick your
-        edition at checkout.
+      <p className="mc-text-shadow mt-3 font-pixel text-[10px] leading-relaxed text-amber-300">
+        THESE ARE JUST RANK TAGS TO SUPPORT THE SERVER — ONLY MOON+ HAS BENEFITS
       </p>
-      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <p className="mt-2 max-w-2xl text-slate-400">
+        Permanent name tags for Java and Bedrock alike. 20% off right now.
+      </p>
+      <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {packages.map((pkg) => (
           <PackageCard key={pkg.id} pkg={pkg} />
         ))}

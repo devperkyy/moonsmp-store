@@ -7,6 +7,7 @@ import { useImageOk } from "./Branding";
 const FALLBACK_ICONS: Record<string, string> = {
   star: "⭐",
   starstruck: "🌠",
+  meteorite: "💫",
   "moon-plus": "🌙",
   asteroid: "☄️",
   "vote-key": "🗳️",

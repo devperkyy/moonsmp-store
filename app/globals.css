@@ -70,6 +70,32 @@ body {
   background: linear-gradient(to bottom, #c9524f 0%, #99302d 100%);
 }
 
+/* red alert banner across the top of the site — netherrack-ish blocky
+   texture via layered pixel-grid gradients */
+.mc-alert {
+  position: relative;
+  z-index: 30;
+  padding: 0.55rem 1rem;
+  text-align: center;
+  border-bottom: 2px solid #000;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 14px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 14px),
+    linear-gradient(180deg, #a3271f 0%, #7f1a14 100%);
+}
+
+/* small red "-20%" pixel badge next to sale prices */
+.mc-sale-badge {
+  display: inline-block;
+  padding: 2px 5px;
+  font-family: var(--font-pixel), monospace;
+  font-size: 9px;
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.85);
+  border: 2px solid #000;
+  background: linear-gradient(180deg, #c9524f 0%, #99302d 100%);
+}
+
 /* MC-style input */
 .mc-input {
   width: 100%;
@@ -285,7 +311,10 @@ body {
   filter: grayscale(0.7) brightness(1.5) contrast(0.85);
 }
 .v-priest {
-  filter: hue-rotate(270deg) saturate(1.7) brightness(0.9);
+  /* sepia first normalizes the low-saturation brown to a controllable base,
+     otherwise hue-rotate + high saturate on brown just turns it into a flat
+     neon-pink blob instead of a believable purple robe */
+  filter: sepia(0.6) hue-rotate(230deg) saturate(2) brightness(0.85);
 }
 .spr-golem {
   transform-origin: bottom center;
@@ -409,12 +438,13 @@ body {
   color: #2b2b2b;
 }
 
-/* Steve holds a single emerald up rather than swinging an axe — a small
-   idle bob instead of the old chopping animation. */
+/* Steve (40px wide, front-facing/symmetric) holds a single emerald
+   centered at chest height — not offset to one side, which read as a
+   stray limb sticking out rather than something held. */
 .steve-emerald {
   position: absolute;
-  top: 30px;
-  left: 27px;
+  top: 26px;
+  left: 11px;
   animation: steve-emerald-bob 2.2s ease-in-out infinite;
 }
 @keyframes steve-emerald-bob {

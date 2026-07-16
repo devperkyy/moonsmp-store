@@ -19,7 +19,7 @@ export function Logo({ className = "h-10 w-auto" }: { className?: string }) {
   const { ref, ok, fail } = useImageOk();
   if (!ok) {
     return (
-      <span className="text-lg font-black tracking-widest">
+      <span className="mc-text-shadow font-pixel text-xs tracking-widest">
         <span className="text-slate-100">MOON</span>{" "}
         <span className="text-moon-500">SMP</span>
       </span>

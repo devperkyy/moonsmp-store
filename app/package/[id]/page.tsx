@@ -78,6 +78,7 @@ export default async function PackagePage({ params }: { params: { id: string } }
         <PurchasePanel
           packageId={pkg.id}
           allowQuantity={pkg.category === "crates"}
+          showSale={pkg.category === "ranks"}
           priceCents={pkg.priceCents}
           currency={pkg.currency}
           createdAt={pkg.createdAt.toLocaleDateString("en-CA", {

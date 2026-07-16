@@ -82,73 +82,47 @@ const golem = {
   ],
 };
 
-// side view, facing right; the chopping arm is a separate sprite
+// front-facing, symmetric — same convention as the villager sprite (both
+// eyes visible, no directional lean), so he doesn't read as "facing the
+// wrong way" standing next to a crowd of front-on villagers. He holds a
+// single emerald (a plain DOM overlay, not part of this sprite) instead of
+// a separate swinging arm.
 const steve = {
   px: 4,
   colors: {
     h: "#3a2a1e", // hair
     s: "#b57e56", // skin
     S: "#96683f", // mouth shade
-    w: "#e8e8e8", // eye white
-    p: "#4a3d8f", // eye iris
+    p: "#4a3d8f", // eyes
     t: "#0e8a84", // shirt
-    T: "#0b6f6a", // shirt shade (back)
     l: "#39387f", // pants
-    L: "#2d2c66", // pants shade
     G: "#5f5f5f", // shoes
   },
   map: [
     ".hhhhhhhh.",
     ".hhhhhhhh.",
-    ".hsssssss.",
-    ".hssssswp.",
-    ".hsssssss.",
+    ".hssssssh.",
+    ".spssssps.",
     ".ssssssss.",
-    ".sssssSSs.",
+    ".ssSSSSss.",
     ".ssssssss.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Tttttttt.",
-    ".Lllllll..",
-    ".Lllllll..",
-    ".Lllllll..",
-    ".Lllllll..",
-    ".Lllllll..",
-    ".Lllllll..",
-    ".GGGGGGG..",
-    ".GGGGGGG..",
-  ],
-};
-
-// drawn hanging straight down; rotated at the shoulder to chop
-const steveArm = {
-  px: 4,
-  colors: {
-    s: "#b57e56", // arm
-    w: "#5e401f", // axe handle
-    G: "#8a9096", // axe head
-    g: "#b7bdc4", // axe edge
-  },
-  map: [
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sss........",
-    ".sww........",
-    ".www.GGg....",
-    ".wwwGGGGg...",
-    ".www.GGg....",
-    ".www........",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".tttttttt.",
+    ".llllllll.",
+    ".llllllll.",
+    ".llllllll.",
+    ".llllllll.",
+    ".llllllll.",
+    ".llllllll.",
+    ".GGGGGGGG.",
+    ".GGGGGGGG.",
   ],
 };
 
@@ -325,7 +299,6 @@ const sprites = {
   villager,
   golem,
   steve,
-  "steve-arm": steveArm,
   oak,
   house,
   farm,
