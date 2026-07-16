@@ -10,6 +10,34 @@ import { terrainClipPath } from "@/lib/terrain";
 const FAR_RIDGE = [0.2, 0.45, 0.7, 0.5, 0.15, 0.35, 0.65, 0.85, 0.6, 0.3, 0.5, 0.75, 0.4, 0.1];
 const NEAR_RIDGE = [0.35, 0.15, 0.6, 0.4, 0.75, 0.5, 0.2, 0.55, 0.85, 0.45, 0.1, 0.3];
 
+// `.scene-item` (position:absolute, pinned via left/right/bottom) and every
+// `.spr-*` sprite class (position:relative, needed so its pixel-art
+// pseudo-element and any child overlays anchor correctly) must live on
+// *separate* elements. Combining them on one <div> lets CSS source order
+// decide which `position` wins — sprites.css loads after globals.css, so
+// `relative` silently clobbers `absolute` and the element falls into normal
+// document flow (this is what caused the floating/misplaced sprites).
+// This wrapper keeps positioning and sprite rendering structurally apart.
+function Placed({
+  positionStyle,
+  spriteClass,
+  spriteStyle,
+  children,
+}: {
+  positionStyle: React.CSSProperties;
+  spriteClass: string;
+  spriteStyle?: React.CSSProperties;
+  children?: React.ReactNode;
+}) {
+  return (
+    <div className="scene-item" style={positionStyle}>
+      <div className={spriteClass} style={spriteStyle}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 function Villager({
   style,
   bubble,
@@ -22,24 +50,42 @@ function Villager({
   flip?: boolean;
 }) {
   return (
-    <div className="scene-item" style={style}>
-      <div className="spr-villager" style={flip ? { scale: "-1 1" } : undefined}>
-        {bubble && (
-          <div className={`v-bubble ${late ? "v-bubble-late" : ""}`}>
-            <span className="emerald" />
-          </div>
-        )}
-      </div>
-    </div>
+    <Placed positionStyle={style} spriteClass="spr-villager" spriteStyle={flip ? { scale: "-1 1" } : undefined}>
+      {bubble && (
+        <div className={`v-bubble ${late ? "v-bubble-late" : ""}`}>
+          <span className="emerald" />
+        </div>
+      )}
+    </Placed>
   );
 }
 
 // window glow positions match the lit panes baked into the house sprite
 function House({ style, scale = 1 }: { style: React.CSSProperties; scale?: number }) {
   return (
-    <div className="scene-item spr-house" style={{ ...style, zoom: scale }}>
+    <Placed positionStyle={style} spriteClass="spr-house" spriteStyle={{ zoom: scale }}>
       <div className="house-glow" style={{ left: "34px", top: "64px" }} />
       <div className="house-glow" style={{ left: "118px", top: "64px", animationDelay: "1.6s" }} />
+    </Placed>
+  );
+}
+
+function Tree({ style, zoom }: { style: React.CSSProperties; zoom?: number }) {
+  return <Placed positionStyle={style} spriteClass="spr-oak" spriteStyle={zoom ? { zoom } : undefined} />;
+}
+
+function Golem({
+  style,
+  spot,
+  animationDelay,
+}: {
+  style: React.CSSProperties;
+  spot?: boolean;
+  animationDelay?: string;
+}) {
+  return (
+    <div className={`scene-item ${spot ? "golem-spot" : ""}`} style={style}>
+      <div className="spr-golem" style={animationDelay ? { animationDelay } : undefined} />
     </div>
   );
 }
@@ -80,13 +126,13 @@ export default function NightBackground() {
       />
 
       {/* forest — one tree survives on mobile */}
-      <div className="scene-item spr-oak" style={{ left: "8vw" }} />
+      <Tree style={{ left: "8vw" }} />
       <div className="wide-deco">
-        <div className="scene-item spr-oak" style={{ left: "21vw", zoom: 0.8 }} />
-        <div className="scene-item spr-oak" style={{ left: "36vw", zoom: 0.7 }} />
-        <div className="scene-item spr-oak" style={{ left: "67vw", zoom: 0.85 }} />
-        <div className="scene-item spr-oak" style={{ left: "88vw" }} />
-        <div className="scene-item spr-oak" style={{ left: "94vw", zoom: 0.7 }} />
+        <Tree style={{ left: "21vw" }} zoom={0.8} />
+        <Tree style={{ left: "36vw" }} zoom={0.7} />
+        <Tree style={{ left: "67vw" }} zoom={0.85} />
+        <Tree style={{ left: "88vw" }} />
+        <Tree style={{ left: "94vw" }} zoom={0.7} />
       </div>
 
       {/* houses */}
@@ -105,7 +151,7 @@ export default function NightBackground() {
 
       {/* crop farm with a water channel */}
       <div className="wide-deco">
-        <div className="scene-item spr-farm" style={{ right: "13vw", bottom: "12.2vh" }} />
+        <Placed positionStyle={{ right: "13vw", bottom: "12.2vh" }} spriteClass="spr-farm" />
       </div>
 
       {/* villagers — the two gossiping traders always show */}
@@ -118,9 +164,9 @@ export default function NightBackground() {
       </div>
 
       {/* iron golems on patrol */}
-      <div className="scene-item spr-golem golem-spot" style={{ left: "76vw" }} />
+      <Golem style={{ left: "76vw" }} spot />
       <div className="wide-deco">
-        <div className="scene-item spr-golem" style={{ left: "17.5vw", animationDelay: "2.5s" }} />
+        <Golem style={{ left: "17.5vw" }} animationDelay="2.5s" />
       </div>
 
       {/* Steve getting wood (tree at 67vw, axe swings into its trunk) */}
@@ -130,7 +176,10 @@ export default function NightBackground() {
 
       <div className="campfire">
         <div className="campfire-glow" />
-        <div className="spr-campfire-logs" style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)" }} />
+        <div
+          className="spr-campfire-logs"
+          style={{ position: "absolute", bottom: 0, left: "50%", transform: "translateX(-50%)" }}
+        />
         <div className="flame" />
         <div className="flame flame-inner" />
         <div className="flame flame-core" />

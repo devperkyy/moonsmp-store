@@ -260,12 +260,19 @@ body {
   top: 34px;
   left: 18px;
   transform-origin: 10px 6px;
-  animation: s-chop 1.1s ease-in infinite;
+  animation: s-chop 1s ease-in-out infinite;
 }
+/* Arm hangs down at 0deg; the sprite's axe head sits to its right at rest.
+   Most of the cycle keeps the arm low/forward so the swing reads as
+   chopping DOWN, not as slowly raising back up — the raised wind-up is
+   brief and the recovery eases straight back to the resting pose instead
+   of lingering up top. */
 @keyframes s-chop {
-  0%, 18% { transform: rotate(150deg); }   /* axe raised behind his head */
-  42%, 52% { transform: rotate(-48deg); }  /* strike into the trunk */
-  100% { transform: rotate(150deg); }      /* wind back up */
+  0%    { transform: rotate(15deg); }   /* resting, hangs down-forward */
+  8%    { transform: rotate(100deg); }  /* quick raise behind his head */
+  24%   { transform: rotate(-55deg); }  /* strike — chops into the trunk */
+  40%   { transform: rotate(-40deg); }  /* brief dwell in the wood */
+  100%  { transform: rotate(15deg); }   /* eases back to resting */
 }
 
 /* ── ravine: a crack in the ground with lava glowing at the bottom ── */
