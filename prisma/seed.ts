@@ -3,8 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 // Placeholder pricing (CAD cents) — edit in the admin panel later.
-// Command templates are placeholders for the custom rank/crate systems:
-// adjust the exact syntax at /admin/packages without touching code.
+// Rank command syntax is confirmed live on the server: `setrank <player> <rank>`.
 const packages = [
   {
     id: "star",
@@ -12,7 +11,7 @@ const packages = [
     description: "Cosmetic rank tag — pure server support, no gameplay perks.",
     category: "ranks",
     priceCents: 299,
-    commandTemplate: "rank give {username} star",
+    commandTemplate: "setrank {username} star",
     sortOrder: 1,
   },
   {
@@ -21,7 +20,7 @@ const packages = [
     description: "Cosmetic rank tag — pure server support, no gameplay perks.",
     category: "ranks",
     priceCents: 399,
-    commandTemplate: "rank give {username} starstruck",
+    commandTemplate: "setrank {username} starstruck",
     sortOrder: 2,
   },
   {
@@ -30,7 +29,7 @@ const packages = [
     description: "Cosmetic rank tag — pure server support, no gameplay perks.",
     category: "ranks",
     priceCents: 499,
-    commandTemplate: "rank give {username} meteorite",
+    commandTemplate: "setrank {username} meteorite",
     sortOrder: 3,
   },
   {
@@ -39,7 +38,7 @@ const packages = [
     description: "Cosmetic rank tag — pure server support, no gameplay perks.",
     category: "ranks",
     priceCents: 599,
-    commandTemplate: "rank give {username} asteroid",
+    commandTemplate: "setrank {username} asteroid",
     sortOrder: 4,
   },
   {
@@ -48,7 +47,7 @@ const packages = [
     description: "The only rank with real benefits — perks and kits on top of the tag.",
     category: "ranks",
     priceCents: 699,
-    commandTemplate: "rank give {username} moonplus",
+    commandTemplate: "setrank {username} moon+",
     sortOrder: 5,
   },
   {
