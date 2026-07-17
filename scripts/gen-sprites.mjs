@@ -5,43 +5,54 @@ import { writeFileSync } from "node:fs";
 
 /* ── hand-drawn sprites ─────────────────────────────────────────────── */
 
-const villager = {
-  px: 4,
-  colors: {
-    s: "#b08155", // skin
-    S: "#96683f", // skin shade
-    H: "#5e401f", // unibrow
-    e: "#3d7a34", // eyes
-    n: "#9a6b42", // nose
-    r: "#55412f", // robe
-    R: "#453427", // robe dark (arms)
-    d: "#2f241a", // robe trim
-  },
-  map: [
-    "..ssssssssss..",
-    "..ssssssssss..",
-    "..sHHHHHHHHs..",
-    "..sees..sees..",
-    "..ssssnnssss..",
-    "..ssssnnssss..",
-    "..ssssnnssss..",
-    "..ssssSSssss..",
-    "..rrrrrrrrrr..",
-    "..rrrrrrrrrr..",
-    "RRRRRRRRRRRRRR",
-    "RRRRRRRRRRRRRR",
-    "RRRRRRRRRRRRRR",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..rrrrddrrrr..",
-    "..RRRRRRRRRR..",
-    "..dd......dd..",
-  ],
-};
+// One shared villager pixel map; professions differ only by robe palette
+// (skin/eyes/nose stay identical — recoloring the whole sprite with CSS
+// filters turned the priest into a purple-faced blob).
+const VILLAGER_MAP = [
+  "..ssssssssss..",
+  "..ssssssssss..",
+  "..sHHHHHHHHs..",
+  "..sees..sees..",
+  "..ssssnnssss..",
+  "..ssssnnssss..",
+  "..ssssnnssss..",
+  "..ssssSSssss..",
+  "..rrrrrrrrrr..",
+  "..rrrrrrrrrr..",
+  "RRRRRRRRRRRRRR",
+  "RRRRRRRRRRRRRR",
+  "RRRRRRRRRRRRRR",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..rrrrddrrrr..",
+  "..RRRRRRRRRR..",
+  "..dd......dd..",
+];
+
+function makeVillager(robe) {
+  return {
+    px: 4,
+    colors: {
+      s: "#b08155", // skin
+      S: "#96683f", // skin shade
+      H: "#5e401f", // unibrow
+      e: "#3d7a34", // eyes
+      n: "#9a6b42", // nose
+      r: robe.r, // robe
+      R: robe.R, // robe dark (arms/hem)
+      d: robe.d, // robe trim
+    },
+    map: VILLAGER_MAP,
+  };
+}
+
+const villager = makeVillager({ r: "#55412f", R: "#453427", d: "#2f241a" }); // farmer brown
+const villagerLibrarian = makeVillager({ r: "#c9c2b1", R: "#a49b88", d: "#6e6656" }); // white robe
+const villagerPriest = makeVillager({ r: "#5d3a7a", R: "#482c60", d: "#301d42" }); // purple robe
 
 const golem = {
   px: 4,
@@ -82,47 +93,47 @@ const golem = {
   ],
 };
 
-// front-facing, symmetric — same convention as the villager sprite (both
-// eyes visible, no directional lean), so he doesn't read as "facing the
-// wrong way" standing next to a crowd of front-on villagers. He holds a
-// single emerald (a plain DOM overlay, not part of this sprite) instead of
-// a separate swinging arm.
+// front-facing, symmetric, WITH arms: sleeves flank the torso and end in
+// skin-colored hands, classic Steve proportions. The held emerald is a DOM
+// overlay positioned over his right hand.
 const steve = {
   px: 4,
   colors: {
     h: "#3a2a1e", // hair
     s: "#b57e56", // skin
-    S: "#96683f", // mouth shade
+    S: "#96683f", // mouth/nose shade
     p: "#4a3d8f", // eyes
     t: "#0e8a84", // shirt
+    T: "#0b6f6a", // shirt shade (arm seam)
     l: "#39387f", // pants
+    L: "#2d2c66", // pants split
     G: "#5f5f5f", // shoes
   },
   map: [
-    ".hhhhhhhh.",
-    ".hhhhhhhh.",
-    ".hssssssh.",
-    ".spssssps.",
-    ".ssssssss.",
-    ".ssSSSSss.",
-    ".ssssssss.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".tttttttt.",
-    ".llllllll.",
-    ".llllllll.",
-    ".llllllll.",
-    ".llllllll.",
-    ".llllllll.",
-    ".llllllll.",
-    ".GGGGGGGG.",
-    ".GGGGGGGG.",
+    "...hhhhhhhh...",
+    "...hhhhhhhh...",
+    "...hssssssh...",
+    "...spssssps...",
+    "...ssssssss...",
+    "...sssSSsss...",
+    "...ssSSSSss...",
+    "...ssssssss...",
+    ".TttttttttttT.",
+    ".TttttttttttT.",
+    ".TttttttttttT.",
+    ".TttttttttttT.",
+    ".TttttttttttT.",
+    ".ss.tttttt.ss.",
+    ".ss.tttttt.ss.",
+    ".ss.tttttt.ss.",
+    "...lllLLlll...",
+    "...lllLLlll...",
+    "...lllLLlll...",
+    "...lllLLlll...",
+    "...lllLLlll...",
+    "...lllLLlll...",
+    "...GGGGGGGG...",
+    "...GGGGGGGG...",
   ],
 };
 
@@ -297,6 +308,8 @@ const farm = {
 
 const sprites = {
   villager,
+  "villager-librarian": villagerLibrarian,
+  "villager-priest": villagerPriest,
   golem,
   steve,
   oak,

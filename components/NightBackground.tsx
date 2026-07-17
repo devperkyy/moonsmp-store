@@ -38,11 +38,13 @@ function Placed({
   );
 }
 
+// each profession is its own generated sprite with a different robe palette
+// (skin identical) — see makeVillager in scripts/gen-sprites.mjs
 type Profession = "farmer" | "librarian" | "priest";
-const PROFESSION_CLASS: Record<Profession, string> = {
-  farmer: "",
-  librarian: "v-librarian",
-  priest: "v-priest",
+const PROFESSION_SPRITE: Record<Profession, string> = {
+  farmer: "spr-villager",
+  librarian: "spr-villager-librarian",
+  priest: "spr-villager-priest",
 };
 
 function Villager({
@@ -60,7 +62,7 @@ function Villager({
   late?: boolean;
   flip?: boolean;
 }) {
-  const spriteClass = `spr-villager ${PROFESSION_CLASS[profession]}`.trim();
+  const spriteClass = `${PROFESSION_SPRITE[profession]} v-anim`;
   return (
     <Placed positionStyle={style} spriteClass={spriteClass} spriteStyle={flip ? { scale: "-1 1" } : undefined}>
       {bubble && (

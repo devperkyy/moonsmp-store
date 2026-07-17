@@ -302,19 +302,11 @@ body {
   position: absolute;
   bottom: 13vh;
 }
-.spr-villager {
+/* shared idle bob for every villager profession sprite (spr-villager,
+   spr-villager-librarian, spr-villager-priest) — profession is a separate
+   sprite with its own robe palette, NOT a CSS filter, so skin stays skin */
+.v-anim {
   animation: v-bob 2.8s steps(2) infinite;
-}
-/* profession robe colors — shifted via filter rather than new sprites.
-   .v-farmer is the default earthy brown, unfiltered. */
-.v-librarian {
-  filter: grayscale(0.7) brightness(1.5) contrast(0.85);
-}
-.v-priest {
-  /* sepia first normalizes the low-saturation brown to a controllable base,
-     otherwise hue-rotate + high saturate on brown just turns it into a flat
-     neon-pink blob instead of a believable purple robe */
-  filter: sepia(0.6) hue-rotate(230deg) saturate(2) brightness(0.85);
 }
 .spr-golem {
   transform-origin: bottom center;
@@ -325,12 +317,12 @@ body {
   50% { transform: rotate(0.8deg); }
 }
 
-/* Steve rig: just the body sprite, standing, holding an emerald up
-   (.steve-emerald) — no swinging arm. */
+/* Steve rig: body sprite (56px wide now that he has arms), standing,
+   holding an emerald at his right hand (.steve-emerald). */
 .steve-rig {
   position: absolute;
   bottom: 13vh;
-  width: 40px;
+  width: 56px;
   height: 96px;
 }
 
@@ -438,13 +430,12 @@ body {
   color: #2b2b2b;
 }
 
-/* Steve (40px wide, front-facing/symmetric) holds a single emerald
-   centered at chest height — not offset to one side, which read as a
-   stray limb sticking out rather than something held. */
+/* the emerald sits at Steve's right hand (sprite cols 11-12 → 44-52px,
+   hands start at row 13 → 52px) and bobs gently like a held item */
 .steve-emerald {
   position: absolute;
-  top: 26px;
-  left: 11px;
+  top: 38px;
+  left: 40px;
   animation: steve-emerald-bob 2.2s ease-in-out infinite;
 }
 @keyframes steve-emerald-bob {
@@ -470,7 +461,7 @@ body {
     transform: scale(0.6);
     transform-origin: bottom left;
   }
-  .spr-villager {
+  .v-anim {
     zoom: 0.85;
   }
   .golem-spot {
