@@ -50,25 +50,59 @@ const packages = [
     commandTemplate: "setrank {username} moon+",
     sortOrder: 5,
   },
+  // Crate command syntax confirmed from the compiled plugin (Crates.class):
+  // "Usage: /crate key add <cratename> <player> <amount>" — note cratename
+  // comes BEFORE player, opposite order from the rank command.
   {
-    id: "vote-key",
-    name: "Vote Key",
-    description: "One key for the Vote Crate.",
+    id: "diamond-crate",
+    name: "Diamond Crate",
+    description: "One key for the Diamond Crate.",
     category: "crates",
-    priceCents: 299,
-    commandTemplate: "crate givekey {username} vote 1",
+    priceCents: 199,
+    commandTemplate: "crate key add Diamond {username} 1",
     sortOrder: 1,
   },
   {
-    id: "donator-key",
-    name: "Donator Key",
-    description: "One key for the Donator Crate — rarer loot pool.",
+    id: "money-crate",
+    name: "Money Crate",
+    description: "One key for the Money Crate.",
     category: "crates",
-    priceCents: 799,
-    commandTemplate: "crate givekey {username} donator 1",
+    priceCents: 299,
+    commandTemplate: "crate key add Money {username} 1",
     sortOrder: 2,
   },
+  {
+    id: "spawner-crate",
+    name: "Spawner Crate",
+    description: "One key for the Spawner Crate.",
+    category: "crates",
+    priceCents: 499,
+    commandTemplate: "crate key add Spawner {username} 1",
+    sortOrder: 3,
+  },
+  {
+    id: "crimson-crate",
+    name: "Crimson Crate",
+    description: "One key for the Crimson Crate.",
+    category: "crates",
+    priceCents: 699,
+    commandTemplate: "crate key add Crimson {username} 1",
+    sortOrder: 4,
+  },
+  {
+    id: "moon-crate",
+    name: "Moon Crate",
+    description: "One key for the Moon Crate — the top tier.",
+    category: "crates",
+    priceCents: 999,
+    commandTemplate: "crate key add Moon {username} 1",
+    sortOrder: 5,
+  },
 ];
+
+// Old 2-tier placeholder crates — deactivated, not deleted, in case any
+// order already references them.
+const retiredPackageIds = ["vote-key", "donator-key"];
 
 async function main() {
   for (const pkg of packages) {
@@ -77,6 +111,11 @@ async function main() {
       update: {}, // never clobber admin edits on re-seed
       create: pkg,
     });
+  }
+  for (const id of retiredPackageIds) {
+    await prisma.package
+      .update({ where: { id }, data: { active: false } })
+      .catch(() => {}); // fine if it was never created
   }
   console.log(`Seeded ${packages.length} packages.`);
 }

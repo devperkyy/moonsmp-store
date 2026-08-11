@@ -10,8 +10,11 @@ const FALLBACK_ICONS: Record<string, string> = {
   meteorite: "💫",
   "moon-plus": "🌙",
   asteroid: "☄️",
-  "vote-key": "🗳️",
-  "donator-key": "🔑",
+  "diamond-crate": "💎",
+  "money-crate": "💰",
+  "spawner-crate": "🥚",
+  "crimson-crate": "🩸",
+  "moon-crate": "🌕",
 };
 
 export default function PackageImage({
