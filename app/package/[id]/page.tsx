@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import PackageImage from "@/components/PackageImage";
 import PurchasePanel from "@/components/PurchasePanel";
+import { salePercentFor } from "@/lib/format";
 import { addReview } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -78,7 +79,7 @@ export default async function PackagePage({ params }: { params: { id: string } }
         <PurchasePanel
           packageId={pkg.id}
           allowQuantity={pkg.category === "crates"}
-          showSale={pkg.category === "ranks"}
+          salePercent={salePercentFor(pkg.category)}
           priceCents={pkg.priceCents}
           currency={pkg.currency}
           createdAt={pkg.createdAt.toLocaleDateString("en-CA", {

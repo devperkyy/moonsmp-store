@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { RANK_SALE_PERCENT, compareAtCents, formatPrice, QUANTITY_OPTIONS } from "@/lib/format";
+import { compareAtCents, formatPrice, QUANTITY_OPTIONS } from "@/lib/format";
 import { getStoredUser, openGate } from "@/lib/user-client";
 
 export default function PurchasePanel({
@@ -11,7 +11,7 @@ export default function PurchasePanel({
   createdAt,
   bought,
   allowQuantity,
-  showSale,
+  salePercent,
 }: {
   packageId: string;
   priceCents: number;
@@ -19,7 +19,7 @@ export default function PurchasePanel({
   createdAt: string; // pre-formatted server-side
   bought: number;
   allowQuantity: boolean; // crates only — ranks are one-time purchases
-  showSale?: boolean; // ranks show a struck-through "was" price + -20% badge
+  salePercent: number | null; // shows a struck-through "was" price + badge when set
 }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [loading, setLoading] = useState(false);
@@ -59,12 +59,12 @@ export default function PurchasePanel({
         {formatPrice(priceCents * quantity, currency)}
         <span className="ml-2 text-xs text-slate-500">CAD</span>
       </div>
-      {showSale && (
+      {salePercent !== null && (
         <div className="mt-2 flex items-center gap-2">
           <s className="text-sm text-slate-500">
-            {formatPrice(compareAtCents(priceCents), currency)}
+            {formatPrice(compareAtCents(priceCents, salePercent), currency)}
           </s>
-          <span className="mc-sale-badge">-{RANK_SALE_PERCENT}%</span>
+          <span className="mc-sale-badge">-{salePercent}%</span>
         </div>
       )}
 

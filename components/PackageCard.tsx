@@ -2,10 +2,10 @@ import Link from "next/link";
 import type { Package } from "@prisma/client";
 import BuyButton from "./BuyButton";
 import PackageImage from "./PackageImage";
-import { RANK_SALE_PERCENT, compareAtCents, formatPrice } from "@/lib/format";
+import { compareAtCents, formatPrice, salePercentFor } from "@/lib/format";
 
 export default function PackageCard({ pkg }: { pkg: Package }) {
-  const onSale = pkg.category === "ranks";
+  const salePercent = salePercentFor(pkg.category);
   return (
     <div className="mc-panel flex flex-col p-5 transition hover:-translate-y-0.5">
       <Link href={`/package/${pkg.id}`} className="group block">
@@ -25,12 +25,12 @@ export default function PackageCard({ pkg }: { pkg: Package }) {
           <span className="mc-text-shadow font-pixel text-sm text-moon-400">
             {formatPrice(pkg.priceCents, pkg.currency)}
           </span>
-          {onSale && (
+          {salePercent !== null && (
             <>
               <s className="text-xs text-slate-500">
-                {formatPrice(compareAtCents(pkg.priceCents), pkg.currency)}
+                {formatPrice(compareAtCents(pkg.priceCents, salePercent), pkg.currency)}
               </s>
-              <span className="mc-sale-badge">-{RANK_SALE_PERCENT}%</span>
+              <span className="mc-sale-badge">-{salePercent}%</span>
             </>
           )}
         </span>

@@ -16,7 +16,7 @@ export default async function CratesPage() {
       <h1 className="mc-text-shadow font-pixel text-2xl text-white">Crates &amp; Keys</h1>
       <p className="mt-2 max-w-2xl text-slate-400">
         Keys are delivered straight to your in-game key balance — open them at the crates
-        near spawn.
+        near spawn. 25% off right now.
       </p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {packages.map((pkg) => (
