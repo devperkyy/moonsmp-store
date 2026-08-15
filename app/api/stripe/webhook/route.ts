@@ -67,6 +67,8 @@ export async function POST(req: Request) {
         platform,
         effectiveUsername,
         email: session.customer_details?.email ?? null,
+        discordId: session.metadata?.discordId || null,
+        discordUsername: session.metadata?.discordUsername || null,
         quantity,
         amountCents: session.amount_total ?? pkg.priceCents * quantity,
         currency: session.currency ?? pkg.currency,

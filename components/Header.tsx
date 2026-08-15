@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Logo } from "./Branding";
 import UserChip from "./UserChip";
+import LegacyUserChip from "./LegacyUserChip";
+import type { StoreSession } from "@/lib/session";
 
 const links = [
   { href: "/", label: "Home" },
@@ -8,7 +10,15 @@ const links = [
   { href: "/crates", label: "Crates & Keys" },
 ];
 
-export default function Header() {
+export default function Header({
+  discordAuth,
+  session,
+  linkedPlayer,
+}: {
+  discordAuth: boolean;
+  session: StoreSession | null;
+  linkedPlayer: string | null;
+}) {
   return (
     <header className="sticky top-0 z-20 border-b-2 border-black bg-night-900/90 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
@@ -25,7 +35,7 @@ export default function Header() {
               {l.label}
             </Link>
           ))}
-          <UserChip />
+          {discordAuth ? <UserChip session={session} player={linkedPlayer} /> : <LegacyUserChip />}
         </nav>
       </div>
     </header>
