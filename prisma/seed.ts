@@ -50,6 +50,15 @@ const packages = [
     commandTemplate: "setrank {username} moon+",
     sortOrder: 5,
   },
+  {
+    id: "moon-plus-plus",
+    name: "Moon++",
+    description: "The highest cosmetic supporter tag — above Moon+, with no extra gameplay perks.",
+    category: "ranks",
+    priceCents: 899,
+    commandTemplate: "setrank {username} moon++",
+    sortOrder: 6,
+  },
   // Crate command syntax confirmed from the compiled plugin (Crates.class):
   // "Usage: /crate key add <cratename> <player> <amount>" — note cratename
   // comes BEFORE player, opposite order from the rank command.
