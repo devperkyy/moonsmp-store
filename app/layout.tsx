@@ -10,8 +10,9 @@ import SignInGate from "@/components/SignInGate";
 import XpBar from "@/components/XpBar";
 import DayNightScroll from "@/components/DayNightScroll";
 import RankNotice from "@/components/RankNotice";
+import { discordAuthConfigured } from "@/lib/discord";
 import { getSession } from "@/lib/session";
-import { getLinkByDiscord, linkingConfigured } from "@/lib/moonlink";
+import { getLinkByDiscord } from "@/lib/moonlink";
 
 const pixel = Press_Start_2P({
   weight: "400",
@@ -29,30 +30,28 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
 };
 
-// DISCORD_CLIENT_ID unset is the kill switch — falls back to the old
-// typed-username gate entirely. Session + the live Turso link lookup are
-// read ONCE per request here and threaded down to both the gate and the
-// header, instead of each doing its own fetch.
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const discordConfigured = Boolean(process.env.DISCORD_CLIENT_ID);
-  const session = discordConfigured ? await getSession() : null;
-  const linkedPlayer = session ? (await getLinkByDiscord(session.discordId))?.player ?? null : null;
-
+  const discordAuth = discordAuthConfigured();
+  const session = discordAuth ? await getSession() : null;
+  let linkedPlayer: string | null = null;
+  if (session) {
+    try {
+      linkedPlayer = (await getLinkByDiscord(session.discordId))?.player ?? null;
+    } catch {
+      // The link service being down should not crash public/legal/admin pages.
+    }
+  }
   return (
     <html lang="en" className={pixel.variable}>
       <body className="flex min-h-screen flex-col">
         <NightBackground />
-        {discordConfigured ? (
-          <SignInGate
-            session={session}
-            linkedPlayer={linkedPlayer}
-            linkingConfigured={linkingConfigured()}
-          />
+        {discordAuth ? (
+          <SignInGate session={session} linkedPlayer={linkedPlayer} />
         ) : (
           <UsernameGate />
         )}
         <RankNotice />
-        <Header discordConfigured={discordConfigured} session={session} linkedPlayer={linkedPlayer} />
+        <Header discordAuth={discordAuth} session={session} linkedPlayer={linkedPlayer} />
         <main className="flex-1">{children}</main>
         <Footer />
         <XpBar />

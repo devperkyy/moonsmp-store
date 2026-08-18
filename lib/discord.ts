@@ -1,41 +1,31 @@
 const API = "https://discord.com/api/v10";
 
-export function siteUrl(): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export function discordAuthConfigured() {
+  return Boolean(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET && process.env.SESSION_SECRET);
 }
 
-export function redirectUri(): string {
-  return `${siteUrl().replace(/\/$/, "")}/api/auth/callback`;
+function siteUrl() {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
 }
 
-/**
- * What we ask the buyer to approve on Discord's consent screen. Deliberately
- * narrower than support.moonsmp.org's scopes — the store has no staff-only
- * area, so no guild/role scopes are requested (a shorter consent screen is
- * also just better for checkout conversion):
- *   identify — user ID, username, avatar. Ties the session to the `links`
- *              row Moon Handler wrote when they ran /link, so we know their
- *              Minecraft account.
- *   email    — used only to prefill Stripe's customer_email at checkout.
- */
-export const OAUTH_SCOPES = ["identify", "email"] as const;
+function redirectUri() {
+  return `${siteUrl()}/api/auth/callback`;
+}
 
-export function authorizeUrl(state: string): string {
+export function authorizeUrl(state: string) {
   const params = new URLSearchParams({
     client_id: process.env.DISCORD_CLIENT_ID ?? "",
     redirect_uri: redirectUri(),
     response_type: "code",
-    scope: OAUTH_SCOPES.join(" "),
+    scope: "identify email",
     state,
-    // "consent" forces the authorize screen every time, so the buyer always
-    // sees and approves what they're handing over.
     prompt: "consent",
   });
   return `https://discord.com/oauth2/authorize?${params}`;
 }
 
-export async function exchangeCode(code: string): Promise<string | null> {
-  const res = await fetch(`${API}/oauth2/token`, {
+export async function exchangeCode(code: string) {
+  const response = await fetch(`${API}/oauth2/token`, {
     method: "POST",
     headers: { "Content-Type": "application/x-www-form-urlencoded" },
     body: new URLSearchParams({
@@ -47,9 +37,8 @@ export async function exchangeCode(code: string): Promise<string | null> {
     }),
     cache: "no-store",
   });
-  if (!res.ok) return null;
-  const json = (await res.json()) as { access_token?: string };
-  return json.access_token ?? null;
+  if (!response.ok) return null;
+  return ((await response.json()) as { access_token?: string }).access_token ?? null;
 }
 
 export type DiscordUser = {
@@ -57,24 +46,18 @@ export type DiscordUser = {
   username: string;
   global_name: string | null;
   avatar: string | null;
-  /** Present only because we ask for the `email` scope. */
   email: string | null;
 };
 
-export async function fetchSelf(accessToken: string): Promise<DiscordUser | null> {
-  const res = await fetch(`${API}/users/@me`, {
+export async function fetchDiscordUser(accessToken: string): Promise<DiscordUser | null> {
+  const response = await fetch(`${API}/users/@me`, {
     headers: { Authorization: `Bearer ${accessToken}` },
     cache: "no-store",
   });
-  if (!res.ok) return null;
-  return (await res.json()) as DiscordUser;
+  return response.ok ? ((await response.json()) as DiscordUser) : null;
 }
 
-export function avatarUrl(user: { id: string; avatar: string | null }): string {
-  if (!user.avatar) {
-    const index = (BigInt(user.id) >> 22n) % 6n;
-    return `https://cdn.discordapp.com/embeds/avatars/${index}.png`;
-  }
-  const ext = user.avatar.startsWith("a_") ? "gif" : "png";
-  return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=64`;
+export function discordAvatarUrl(user: DiscordUser) {
+  if (!user.avatar) return null;
+  return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=128`;
 }

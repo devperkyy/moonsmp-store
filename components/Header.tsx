@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Logo } from "./Branding";
 import UserChip from "./UserChip";
 import LegacyUserChip from "./LegacyUserChip";
-import type { Session } from "@/lib/session";
+import type { StoreSession } from "@/lib/session";
 
 const links = [
   { href: "/", label: "Home" },
@@ -11,12 +11,12 @@ const links = [
 ];
 
 export default function Header({
-  discordConfigured,
+  discordAuth,
   session,
   linkedPlayer,
 }: {
-  discordConfigured: boolean;
-  session: Session | null;
+  discordAuth: boolean;
+  session: StoreSession | null;
   linkedPlayer: string | null;
 }) {
   return (
@@ -35,18 +35,7 @@ export default function Header({
               {l.label}
             </Link>
           ))}
-          {discordConfigured ? (
-            session && (
-              <UserChip
-                discordUsername={session.discordUsername}
-                discordAvatar={session.discordAvatar}
-                linkedPlayer={linkedPlayer}
-                platform={session.platform}
-              />
-            )
-          ) : (
-            <LegacyUserChip />
-          )}
+          {discordAuth ? <UserChip session={session} player={linkedPlayer} /> : <LegacyUserChip />}
         </nav>
       </div>
     </header>
