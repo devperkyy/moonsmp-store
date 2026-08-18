@@ -9,6 +9,7 @@ const FALLBACK_ICONS: Record<string, string> = {
   starstruck: "🌠",
   meteorite: "💫",
   "moon-plus": "🌙",
+  "moon-plus-plus": "🪐",
   asteroid: "☄️",
   "diamond-crate": "💎",
   "money-crate": "💰",

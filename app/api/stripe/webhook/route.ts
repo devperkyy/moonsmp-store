@@ -67,6 +67,10 @@ export async function POST(req: Request) {
         platform,
         effectiveUsername,
         email: session.customer_details?.email ?? null,
+        // Set only when checkout ran through Discord sign-in (see
+        // app/api/checkout/route.ts) — null for legacy/kill-switch orders.
+        discordId: session.metadata?.discordId ?? null,
+        discordUsername: session.metadata?.discordUsername ?? null,
         quantity,
         amountCents: session.amount_total ?? pkg.priceCents * quantity,
         currency: session.currency ?? pkg.currency,

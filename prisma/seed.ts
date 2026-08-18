@@ -44,11 +44,20 @@ const packages = [
   {
     id: "moon-plus",
     name: "Moon+",
-    description: "The only rank with real benefits — perks and kits on top of the tag.",
+    description: "Real benefits — perks and kits on top of the tag.",
     category: "ranks",
     priceCents: 699,
     commandTemplate: "setrank {username} moon+",
     sortOrder: 5,
+  },
+  {
+    id: "moon-plus-plus",
+    name: "Moon++",
+    description: "Everything Moon+ gets, plus even more perks and kits on top.",
+    category: "ranks",
+    priceCents: 899,
+    commandTemplate: "setrank {username} moon++",
+    sortOrder: 6,
   },
   // Crate command syntax confirmed from the compiled plugin (Crates.class):
   // "Usage: /crate key add <cratename> <player> <amount>" — note cratename

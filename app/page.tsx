@@ -14,12 +14,17 @@ const categories = [
   },
 ];
 
+// Step 2's wording depends on which entry gate is live — with Discord
+// sign-in the delivery target is the linked account, not a typed username.
+// Same DISCORD_CLIENT_ID kill switch app/layout.tsx uses.
 const steps = [
   { n: "1", title: "Pick a package", text: "Choose a rank or crate key from the store." },
   {
     n: "2",
     title: "Checkout with Stripe",
-    text: "Pay securely — your purchase goes to the username you entered when you joined the site.",
+    text: process.env.DISCORD_CLIENT_ID
+      ? "Pay securely — your purchase goes to the Minecraft account linked to your Discord."
+      : "Pay securely — your purchase goes to the username you entered when you joined the site.",
   },
   {
     n: "3",

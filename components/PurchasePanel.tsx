@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { compareAtCents, formatPrice, QUANTITY_OPTIONS } from "@/lib/format";
-import { getStoredUser, openGate } from "@/lib/user-client";
+import { startCheckout } from "@/lib/checkout-client";
 
 export default function PurchasePanel({
   packageId,
@@ -25,29 +25,13 @@ export default function PurchasePanel({
   const [loading, setLoading] = useState(false);
 
   async function buy() {
-    const user = getStoredUser();
-    if (!user) {
-      openGate();
-      return;
-    }
     setLoading(true);
     try {
-      const res = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          packageId,
-          quantity,
-          username: user.username,
-          platform: user.platform,
-        }),
-      });
-      const data = await res.json();
-      if (!res.ok || !data.url) throw new Error(data.error ?? "Checkout failed");
-      window.location.href = data.url;
+      await startCheckout(packageId, quantity);
     } catch (err) {
       console.error(err);
       alert("Could not start checkout — please try again.");
+    } finally {
       setLoading(false);
     }
   }

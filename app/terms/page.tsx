@@ -14,7 +14,7 @@ const sections: { title: string; body: string[] }[] = [
     title: "2. Digital goods & delivery",
     body: [
       "Everything sold here is a digital item delivered inside the Moon SMP Minecraft server. Nothing physical is shipped.",
-      "Purchases are delivered automatically to the Minecraft username you entered and confirmed when you entered this website. It is your responsibility to make sure that username is correct and matches the account (Java or Bedrock) that you actually play on. Items delivered to a username you entered incorrectly cannot be recovered.",
+      "Purchases are delivered automatically to the Minecraft account linked to the Discord account you signed in with, as confirmed by you when you entered this website. It is your responsibility to make sure that link points at the account (Java or Bedrock) you actually play on — ask a staff member to unlink it before buying if it does not. Items delivered to an incorrectly linked account cannot be recovered.",
       "Delivery normally completes within a few minutes of payment. If the server is offline or restarting, your purchase is queued and delivered automatically as soon as the server is back. If you have not received a purchase within 24 hours, open a ticket in our Discord and we will look at the delivery log for your order.",
     ],
   },
