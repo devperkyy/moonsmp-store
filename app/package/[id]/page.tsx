@@ -5,6 +5,7 @@ import { prisma } from "@/lib/db";
 import PackageImage from "@/components/PackageImage";
 import PurchasePanel from "@/components/PurchasePanel";
 import { salePercentFor } from "@/lib/format";
+import { discordAuthConfigured } from "@/lib/discord";
 import { addReview } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -88,6 +89,7 @@ export default async function PackagePage({ params }: { params: { id: string } }
             day: "numeric",
           })}
           bought={bought}
+          discordAuth={discordAuthConfigured()}
         />
       </div>
 

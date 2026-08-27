@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import PackageCard from "@/components/PackageCard";
+import { discordAuthConfigured } from "@/lib/discord";
 
 export const metadata: Metadata = { title: "Crates & Keys" };
 export const dynamic = "force-dynamic";
@@ -10,6 +11,7 @@ export default async function CratesPage() {
     where: { category: "crates", active: true },
     orderBy: { sortOrder: "asc" },
   });
+  const discordAuth = discordAuthConfigured();
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-14">
@@ -20,7 +22,7 @@ export default async function CratesPage() {
       </p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {packages.map((pkg) => (
-          <PackageCard key={pkg.id} pkg={pkg} />
+          <PackageCard key={pkg.id} pkg={pkg} discordAuth={discordAuth} />
         ))}
       </div>
       {packages.length === 0 && (

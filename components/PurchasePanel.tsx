@@ -12,6 +12,7 @@ export default function PurchasePanel({
   bought,
   allowQuantity,
   salePercent,
+  discordAuth,
 }: {
   packageId: string;
   priceCents: number;
@@ -20,15 +21,21 @@ export default function PurchasePanel({
   bought: number;
   allowQuantity: boolean; // crates only — ranks are one-time purchases
   salePercent: number | null; // shows a struck-through "was" price + badge when set
+  discordAuth: boolean;
 }) {
   const [quantity, setQuantity] = useState<number>(1);
   const [loading, setLoading] = useState(false);
 
   async function buy() {
-    const user = getStoredUser();
-    if (!user) {
-      openGate();
-      return;
+    // With Discord auth live, identity comes from the session cookie server-side —
+    // the legacy sessionStorage gate is never populated any more, so skip it here.
+    let user: { username: string; platform: "java" | "bedrock" } | null = null;
+    if (!discordAuth) {
+      user = getStoredUser();
+      if (!user) {
+        openGate();
+        return;
+      }
     }
     setLoading(true);
     try {
@@ -38,8 +45,8 @@ export default function PurchasePanel({
         body: JSON.stringify({
           packageId,
           quantity,
-          username: user.username,
-          platform: user.platform,
+          username: user?.username,
+          platform: user?.platform,
         }),
       });
       const data = await res.json();

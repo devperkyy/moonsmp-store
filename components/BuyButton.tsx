@@ -3,14 +3,25 @@
 import { useState } from "react";
 import { getStoredUser, openGate } from "@/lib/user-client";
 
-export default function BuyButton({ packageId }: { packageId: string }) {
+export default function BuyButton({
+  packageId,
+  discordAuth,
+}: {
+  packageId: string;
+  discordAuth: boolean;
+}) {
   const [loading, setLoading] = useState(false);
 
   async function buy() {
-    const user = getStoredUser();
-    if (!user) {
-      openGate();
-      return;
+    // With Discord auth live, identity comes from the session cookie server-side —
+    // the legacy sessionStorage gate is never populated any more, so skip it here.
+    let user: { username: string; platform: "java" | "bedrock" } | null = null;
+    if (!discordAuth) {
+      user = getStoredUser();
+      if (!user) {
+        openGate();
+        return;
+      }
     }
     setLoading(true);
     try {
@@ -20,8 +31,8 @@ export default function BuyButton({ packageId }: { packageId: string }) {
         body: JSON.stringify({
           packageId,
           quantity: 1,
-          username: user.username,
-          platform: user.platform,
+          username: user?.username,
+          platform: user?.platform,
         }),
       });
       const data = await res.json();
