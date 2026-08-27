@@ -7,7 +7,7 @@ import { getStoredUser, openGate } from "@/lib/user-client";
 //   - legacy mode's checkout branch returns 400 "Invalid Minecraft username"
 //     when nothing is in sessionStorage yet → reopen the old gate.
 //   - Discord mode's branch returns 401 "auth_required" when there's no
-//     session at all, 403 "not_linked"/"onboarding_incomplete" when signed
+//     session at all, 403 "link_required"/"onboarding_required" when signed
 //     in but the gate isn't fully satisfied yet, 503 "linking_unavailable"
 //     if Turso is down.
 // A legacy stored user (if present) is still forwarded for backward
@@ -39,8 +39,8 @@ export async function startCheckout(packageId: string, quantity: number): Promis
     case "auth_required":
       window.location.href = `/api/auth/login?next=${encodeURIComponent(window.location.pathname)}`;
       return;
-    case "not_linked":
-    case "onboarding_incomplete":
+    case "link_required":
+    case "onboarding_required":
       // The gate is server-rendered from session/link state — reloading
       // re-evaluates it and shows the right step.
       window.location.reload();

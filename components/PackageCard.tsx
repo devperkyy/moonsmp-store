@@ -4,13 +4,7 @@ import BuyButton from "./BuyButton";
 import PackageImage from "./PackageImage";
 import { compareAtCents, formatPrice, salePercentFor } from "@/lib/format";
 
-export default function PackageCard({
-  pkg,
-  discordAuth,
-}: {
-  pkg: Package;
-  discordAuth: boolean;
-}) {
+export default function PackageCard({ pkg }: { pkg: Package }) {
   const salePercent = salePercentFor(pkg.category);
   return (
     <div className="mc-panel flex flex-col p-5 transition hover:-translate-y-0.5">
@@ -40,7 +34,7 @@ export default function PackageCard({
             </>
           )}
         </span>
-        <BuyButton packageId={pkg.id} discordAuth={discordAuth} />
+        <BuyButton packageId={pkg.id} />
       </div>
     </div>
   );
