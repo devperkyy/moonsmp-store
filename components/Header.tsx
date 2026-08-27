@@ -20,7 +20,7 @@ export default function Header({
   linkedPlayer: string | null;
 }) {
   return (
-    <header className="sticky top-0 z-20 border-b-2 border-black bg-night-900/90 backdrop-blur">
+    <header className="sticky top-0 z-20 border-b border-white/10 bg-night-950/60 backdrop-blur-xl">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-3">
           <Logo />
@@ -30,7 +30,7 @@ export default function Header({
             <Link
               key={l.href}
               href={l.href}
-              className="mc-text-shadow px-2 py-2 font-pixel text-[10px] text-slate-300 transition hover:text-white sm:px-3"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-slate-300 transition hover:bg-white/5 hover:text-white"
             >
               {l.label}
             </Link>

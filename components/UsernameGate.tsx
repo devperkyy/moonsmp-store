@@ -111,12 +111,12 @@ export default function UsernameGate() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-gradient-to-b from-[#04060d] via-[#070b17] to-[#0d1526]">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-night-950/55 backdrop-blur-md">
       <div ref={topRef} className="mx-auto max-w-lg px-4 py-16 sm:py-24">
         {/* step 1: username */}
         <div className="mc-panel p-8">
-          <h1 className="mc-text-shadow font-pixel text-lg leading-relaxed text-white">
-            MOON <span className="text-moon-400">SMP</span>
+          <h1 className="text-2xl font-extrabold tracking-tight text-white">
+            Moon <span className="text-moon-400">SMP</span>
           </h1>
           <p className="mt-3 text-sm text-slate-300">
             Enter your Minecraft username to browse the store. Ranks and keys are
@@ -201,15 +201,15 @@ export default function UsernameGate() {
               for how your data is used.
             </p>
 
-            <div className="mt-6 flex items-center gap-4 border-2 border-black bg-night-900/80 p-4">
+            <div className="mt-6 flex items-center gap-4 rounded-xl border border-white/10 bg-black/25 p-4">
               <MinecraftHead
                 username={username.trim()}
                 platform={platform}
                 size={64}
-                className="border-2 border-black"
+                className="rounded-lg"
               />
               <div>
-                <p className="mc-text-shadow font-pixel text-sm text-white">
+                <p className="text-base font-bold text-white">
                   {username.trim()}
                 </p>
                 <p className="mt-1 text-sm text-slate-400">Is this you?</p>
@@ -232,7 +232,7 @@ export default function UsernameGate() {
           <div ref={continueRef} className="mc-panel mt-24 p-8 text-center">
             <p className="text-sm text-slate-300">
               Everything you buy will be delivered in-game to{" "}
-              <span className="font-pixel text-xs text-moon-300">{username.trim()}</span>
+              <span className="font-bold text-moon-300">{username.trim()}</span>
               {platform === "bedrock" ? " (Bedrock)" : ""}.
             </p>
             <button type="button" onClick={finish} className="mc-btn mc-btn-green mt-6 w-full">

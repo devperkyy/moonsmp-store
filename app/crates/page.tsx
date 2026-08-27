@@ -13,7 +13,7 @@ export default async function CratesPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 pt-14">
-      <h1 className="mc-text-shadow font-pixel text-2xl text-white">Crates &amp; Keys</h1>
+      <h1 className="text-4xl font-extrabold tracking-tight text-white">Crates &amp; Keys</h1>
       <p className="mt-2 max-w-2xl text-slate-400">
         Keys are delivered straight to your in-game key balance — open them at the crates
         near spawn. 25% off right now.

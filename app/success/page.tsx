@@ -27,7 +27,7 @@ export default async function SuccessPage({
     <div className="mx-auto max-w-xl px-4 pt-24 text-center">
       <div className="mc-panel p-10">
         <div className="text-5xl">{paid ? "🌙" : "⏳"}</div>
-        <h1 className="mc-text-shadow mt-4 font-pixel text-xl text-white">
+        <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-white">
           {paid ? "Thank you!" : "Almost there…"}
         </h1>
         <p className="mt-3 text-slate-300">

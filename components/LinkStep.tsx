@@ -46,8 +46,8 @@ export default function LinkStep() {
   const secondsLeft = issued ? Math.max(0, Math.floor((issued.expiresAt - now) / 1000)) : 0;
 
   return (
-    <div className="mc-panel w-full max-w-xl p-6 text-center">
-      <p className="mc-text-shadow font-pixel text-sm text-white">LINK MINECRAFT</p>
+    <div className="mc-panel w-full max-w-xl p-8 text-center">
+      <p className="text-base font-extrabold tracking-tight text-white">Link Minecraft</p>
       <p className="mt-4 text-sm leading-relaxed text-slate-300">
         Your Discord must be linked before purchasing so ranks and keys reach the account you own.
       </p>
@@ -56,9 +56,9 @@ export default function LinkStep() {
           {busy ? "..." : issued ? "Generate a new code" : "Get link code"}
         </button>
       ) : (
-        <div className="mt-6 border-2 border-black bg-night-900 p-5">
+        <div className="mt-6 rounded-xl border border-white/10 bg-black/25 p-5">
           <p className="text-xs text-slate-400">Join the server, then run:</p>
-          <code className="mc-text-shadow mt-3 block font-pixel text-xl text-moon-300">
+          <code className="mt-3 block font-mono text-lg font-semibold text-moon-300">
             {issued.command}
           </code>
           <p className="mt-3 text-xs text-slate-500">Expires in {secondsLeft}s — checking automatically.</p>

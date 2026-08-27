@@ -39,8 +39,8 @@ export default function HomePage() {
       {/* hero */}
       <section className="pt-16 text-center sm:pt-24">
         <Banner />
-        <h1 className="mc-text-shadow mt-10 font-pixel text-2xl leading-relaxed text-white sm:text-4xl">
-          MOON SMP <span className="text-moon-400">STORE</span>
+        <h1 className="mt-10 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl">
+          Moon SMP <span className="bg-gradient-to-r from-moon-300 to-moon-500 bg-clip-text text-transparent">Store</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-slate-300">
           Support the server and get something shiny back. Every purchase is delivered
@@ -54,10 +54,10 @@ export default function HomePage() {
           <Link
             key={c.href}
             href={c.href}
-            className="mc-panel group p-8 transition hover:-translate-y-0.5"
+            className="mc-panel group p-8 transition duration-200 hover:-translate-y-1 hover:border-white/20"
           >
-            <h2 className="mc-text-shadow font-pixel text-base text-white group-hover:text-moon-300">
-              {c.title} →
+            <h2 className="text-xl font-bold text-white transition group-hover:text-moon-300">
+              {c.title} <span className="transition group-hover:translate-x-1">→</span>
             </h2>
             <p className="mt-3 text-sm text-slate-400">{c.blurb}</p>
           </Link>
@@ -66,14 +66,14 @@ export default function HomePage() {
 
       {/* how it works */}
       <section className="mt-20">
-        <h2 className="mc-text-shadow text-center font-pixel text-sm text-slate-200">
+        <h2 className="text-center text-sm font-bold uppercase tracking-widest text-slate-400">
           How it works
         </h2>
         <div className="mt-8 grid gap-6 sm:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="mc-panel p-6 text-center">
               <div className="mc-btn mc-btn-green mx-auto !px-4">{s.n}</div>
-              <h3 className="mc-text-shadow mt-4 font-pixel text-xs text-white">{s.title}</h3>
+              <h3 className="mt-4 text-sm font-bold text-white">{s.title}</h3>
               <p className="mt-3 text-sm text-slate-400">{s.text}</p>
             </div>
           ))}

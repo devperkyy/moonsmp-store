@@ -14,9 +14,9 @@ export default function LegacyUserChip() {
   }, []);
   if (!user) return null;
   return (
-    <button onClick={openGate} title="Change player" className="ml-2 flex items-center gap-2 border-2 border-black bg-night-800 px-2 py-1">
+    <button onClick={openGate} title="Change player" className="ml-2 flex items-center gap-2 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1.5 transition hover:bg-white/10">
       <MinecraftHead username={user.username} platform={user.platform} size={20} />
-      <span className="hidden font-pixel text-[10px] text-slate-200 sm:inline">{user.username}</span>
+      <span className="hidden text-xs font-semibold text-slate-200 sm:inline">{user.username}</span>
     </button>
   );
 }

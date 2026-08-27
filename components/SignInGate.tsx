@@ -56,10 +56,10 @@ export default function SignInGate({
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-gradient-to-b from-night-900 via-night-800 to-night-900 p-4">
+    <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-night-950/55 p-4 backdrop-blur-md">
       {!session ? (
-        <div className="mc-panel w-full max-w-xl p-7 text-center">
-          <p className="mc-text-shadow font-pixel text-xl text-white">MOON SMP STORE</p>
+        <div className="mc-panel w-full max-w-xl p-8 text-center">
+          <p className="text-2xl font-extrabold tracking-tight text-white">Moon SMP Store</p>
           <p className="mt-5 text-sm leading-relaxed text-slate-300">
             Sign in with Discord to verify your identity before entering the store.
           </p>
@@ -71,12 +71,12 @@ export default function SignInGate({
       ) : !linkedPlayer ? (
         <LinkStep />
       ) : (
-        <div className="mc-panel w-full max-w-xl p-7 text-center">
-          <p className="mc-text-shadow font-pixel text-sm text-emerald-300">ACCOUNT VERIFIED</p>
+        <div className="mc-panel w-full max-w-xl p-8 text-center">
+          <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">Account verified</p>
           <div className="mt-5 flex items-center justify-center gap-4">
             <MinecraftHead username={linkedPlayer} platform={platform} size={64} />
             <div className="text-left">
-              <p className="font-pixel text-sm text-white">{linkedPlayer}</p>
+              <p className="text-base font-bold text-white">{linkedPlayer}</p>
               <p className="mt-2 text-xs text-slate-400">Signed in as {session.discordUsername}</p>
             </div>
           </div>

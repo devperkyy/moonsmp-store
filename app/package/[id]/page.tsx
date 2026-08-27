@@ -60,10 +60,10 @@ export default async function PackagePage({ params }: { params: { id: string } }
           <PackageImage
             id={pkg.id}
             name={pkg.name}
-            className="aspect-[4/3] w-full border-2 border-black shadow-2xl shadow-black/50"
+            className="aspect-[4/3] w-full rounded-xl border border-white/10 shadow-2xl shadow-black/50"
             iconClassName="text-8xl"
           />
-          <h1 className="mc-text-shadow mt-6 font-pixel text-xl text-white">{pkg.name}</h1>
+          <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-white">{pkg.name}</h1>
           <div className="mt-2 flex items-center gap-3">
             <Stars value={avgRating} />
             <span className="text-sm text-slate-500">
@@ -93,7 +93,7 @@ export default async function PackagePage({ params }: { params: { id: string } }
 
       {/* reviews */}
       <section className="mt-16 max-w-3xl">
-        <h2 className="mc-text-shadow font-pixel text-base text-white">Reviews</h2>
+        <h2 className="text-xl font-extrabold tracking-tight text-white">Reviews</h2>
 
         <form action={addReview} className="mc-panel mt-4 p-5">
           <input type="hidden" name="packageId" value={pkg.id} />

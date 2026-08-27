@@ -39,9 +39,9 @@ export default function PurchasePanel({
   return (
     <div className="mc-panel h-fit p-6">
       {/* bold price, updates with quantity */}
-      <div className="mc-text-shadow font-pixel text-3xl text-white">
+      <div className="text-3xl font-extrabold tracking-tight text-white">
         {formatPrice(priceCents * quantity, currency)}
-        <span className="ml-2 text-xs text-slate-500">CAD</span>
+        <span className="ml-2 text-xs font-medium text-slate-500">CAD</span>
       </div>
       {salePercent !== null && (
         <div className="mt-2 flex items-center gap-2">
@@ -67,7 +67,7 @@ export default function PurchasePanel({
 
       {allowQuantity ? (
         <div className="mt-6">
-          <p className="mc-text-shadow font-pixel text-[10px] text-slate-300">Package</p>
+          <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">Package</p>
           <div className="mt-2 space-y-2">
             {QUANTITY_OPTIONS.map((q) => (
               <button
@@ -82,7 +82,7 @@ export default function PurchasePanel({
           </div>
         </div>
       ) : (
-        <p className="mt-6 border-2 border-black bg-night-900/70 p-3 text-xs text-slate-400">
+        <p className="mt-6 rounded-lg border border-white/10 bg-black/20 p-3 text-xs text-slate-400">
           Ranks are a one-time purchase — yours forever.
         </p>
       )}

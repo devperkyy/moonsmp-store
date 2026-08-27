@@ -69,7 +69,7 @@ const sections: { title: string; body: string[] }[] = [
 export default function PrivacyPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 pt-14">
-      <h1 className="mc-text-shadow font-pixel text-2xl text-white">
+      <h1 className="text-3xl font-extrabold tracking-tight text-white">
         Privacy <span className="text-moon-400">Policy</span>
       </h1>
       <p className="mt-3 text-sm text-slate-500">Last updated: July 15, 2026</p>
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
       <div className="mc-panel mt-8 space-y-8 p-8">
         {sections.map((s) => (
           <section key={s.title}>
-            <h2 className="mc-text-shadow font-pixel text-sm text-moon-300">{s.title}</h2>
+            <h2 className="text-base font-bold text-moon-300">{s.title}</h2>
             {s.body.map((p, i) => (
               <p key={i} className="mt-3 text-sm leading-relaxed text-slate-300">
                 {p}

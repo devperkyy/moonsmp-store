@@ -12,102 +12,114 @@ body {
   padding-bottom: 16px;
 }
 
-/* ───────────────────────── Minecraft UI kit ─────────────────────────── */
+/* ───────────────────────── Modern UI kit ─────────────────────────── */
+/* Glass-panel dark theme: translucent surfaces over the photo background,
+   soft borders/shadows instead of hard pixel outlines. .font-pixel /
+   Press Start 2P is now reserved for the single logo wordmark — every
+   other surface here uses the system sans stack. */
 
 .mc-text-shadow {
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
 }
 
-/* blocky panel — square corners, black outline, inner bevel */
+/* glass panel — translucent, blurred, soft border + shadow */
 .mc-panel {
-  background: rgba(9, 14, 27, 0.95);
-  border: 2px solid #000;
+  background: rgba(13, 18, 32, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 1rem;
   box-shadow:
-    inset 0 0 0 2px #26314e,
-    6px 6px 0 rgba(0, 0, 0, 0.35);
+    0 1px 0 0 rgba(255, 255, 255, 0.06) inset,
+    0 20px 40px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* classic MC stone button */
+/* modern rounded button, subtle warm glow that grows as the page scrolls
+   toward "night" — --night-glow (0..1) is set on <html> by DayNightScroll */
 .mc-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.7rem 1.1rem;
-  font-family: var(--font-pixel), monospace;
-  font-size: 11px;
+  padding: 0.65rem 1.15rem;
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
   color: #fff;
-  text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.85);
-  border: 2px solid #000;
-  background: linear-gradient(to bottom, #8d8d8d 0%, #6c6c6c 100%);
-  /* campfire-warm halo that grows as the page scrolls toward "night" —
-     --night-glow (0..1) is set on <html> by DayNightScroll */
-  box-shadow:
-    inset 2px 2px 0 rgba(255, 255, 255, 0.35),
-    inset -2px -3px 0 rgba(0, 0, 0, 0.4),
-    0 0 14px rgba(255, 165, 60, calc(var(--night-glow, 0) * 0.55));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 0.65rem;
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 0 0 rgba(255, 165, 60, 0);
   cursor: pointer;
-  image-rendering: pixelated;
-  transition: filter 0.08s;
+  transition: background-color 0.15s, border-color 0.15s, transform 0.1s, box-shadow 0.2s;
 }
 .mc-btn:hover:not(:disabled) {
-  filter: brightness(1.18);
+  background: rgba(255, 255, 255, 0.11);
+  border-color: rgba(255, 255, 255, 0.18);
 }
 .mc-btn:active:not(:disabled) {
-  box-shadow:
-    inset -2px -2px 0 rgba(255, 255, 255, 0.2),
-    inset 2px 3px 0 rgba(0, 0, 0, 0.4),
-    0 0 14px rgba(255, 165, 60, calc(var(--night-glow, 0) * 0.55));
+  transform: scale(0.97);
 }
 .mc-btn:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
 .mc-btn-green {
-  background: linear-gradient(to bottom, #6ec349 0%, #4e9a2e 100%);
+  color: #04140a;
+  border-color: transparent;
+  background: linear-gradient(135deg, #7cf29c 0%, #3ecf72 55%, #2aa85c 100%);
+  box-shadow:
+    0 1px 0 0 rgba(255, 255, 255, 0.4) inset,
+    0 8px 20px -6px rgba(46, 189, 106, 0.55),
+    0 0 22px rgba(255, 165, 60, calc(var(--night-glow, 0) * 0.35));
+}
+.mc-btn-green:hover:not(:disabled) {
+  filter: brightness(1.08);
+  background: linear-gradient(135deg, #7cf29c 0%, #3ecf72 55%, #2aa85c 100%);
 }
 .mc-btn-red {
-  background: linear-gradient(to bottom, #c9524f 0%, #99302d 100%);
+  color: #fff;
+  border-color: transparent;
+  background: linear-gradient(135deg, #ff8a80 0%, #e5484d 100%);
 }
 
-/* red alert banner across the top of the site — netherrack-ish blocky
-   texture via layered pixel-grid gradients */
+/* slim modern notice bar (was a shouty netherrack-red banner) */
 .mc-alert {
   position: relative;
   z-index: 30;
   padding: 0.55rem 1rem;
   text-align: center;
-  border-bottom: 2px solid #000;
-  background:
-    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.25) 0 2px, transparent 2px 14px),
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.18) 0 2px, transparent 2px 14px),
-    linear-gradient(180deg, #a3271f 0%, #7f1a14 100%);
+  border-bottom: 1px solid rgba(245, 158, 11, 0.25);
+  background: rgba(120, 53, 15, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
-/* small red "-20%" pixel badge next to sale prices */
+/* small "-20%" sale badge */
 .mc-sale-badge {
   display: inline-block;
-  padding: 2px 5px;
-  font-family: var(--font-pixel), monospace;
-  font-size: 9px;
+  padding: 2px 7px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
   color: #fff;
-  text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.85);
-  border: 2px solid #000;
-  background: linear-gradient(180deg, #c9524f 0%, #99302d 100%);
+  border-radius: 9999px;
+  background: linear-gradient(135deg, #ff8a80 0%, #e5484d 100%);
 }
 
-/* MC-style input */
+/* modern input */
 .mc-input {
   width: 100%;
   padding: 0.6rem 0.8rem;
-  background: #0a0a0f;
-  border: 2px solid #000;
-  box-shadow: inset 0 0 0 2px #3b465f;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 0.6rem;
   color: #fff;
   outline: none;
+  transition: border-color 0.15s;
 }
 .mc-input:focus {
-  box-shadow: inset 0 0 0 2px #6b8cff;
+  border-color: #6b8cff;
 }
 
 /* ── scroll XP bar ── */
@@ -485,24 +497,9 @@ body {
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background:
-    repeating-conic-gradient(rgba(255, 255, 255, 0.022) 0% 25%, transparent 0% 50%) 0 0 / 44px 44px,
-    linear-gradient(180deg, #141d33 0%, #0d1424 100%);
-  border: 2px solid #000;
-  box-shadow: inset 0 0 0 2px #26314e;
-}
-.mc-item-frame::after {
-  /* grass strip along the bottom */
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 16%;
-  border-top: 3px solid #0e1a0a;
-  background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 6px, transparent 6px 18px),
-    linear-gradient(#25391b 0 9px, #241a10 9px 100%);
+  background: linear-gradient(160deg, rgba(107, 140, 255, 0.14) 0%, rgba(13, 20, 36, 0.6) 60%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.85rem;
 }
 .mc-item {
   position: relative;
