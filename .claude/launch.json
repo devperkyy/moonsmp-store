@@ -5,7 +5,7 @@
       "name": "moonsmp-store",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "dev"],
-      "cwd": "C:\\Users\\domin\\moonsmp-store",
+      "cwd": "C:\\Users\\domin\\OneDrive\\moonsmp-store",
       "port": 3000
     }
   ]

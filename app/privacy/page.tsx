@@ -7,7 +7,8 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "1. What we collect",
     body: [
-      "The Minecraft username and edition (Java or Bedrock) you enter and confirm when you enter this website. It is stored in your browser for the length of your visit so your purchases can be delivered to the right player.",
+      "When you sign in with Discord: your Discord user ID, username, avatar, and the email address on your Discord account. Discord shows you exactly this list on its own consent screen before anything is shared, and you can decline there.",
+      "The Minecraft account linked to your Discord account, which we read from the Moon SMP bot so your purchases reach the right player, plus the edition (Java or Bedrock) you confirm when you enter this website.",
       "When you buy something: the package, price, and quantity you bought, a Stripe payment reference, and the email address you give Stripe at checkout (used for your receipt and for support).",
       "Delivery records: the in-game command that ran for your purchase, whether it succeeded, and when. We keep these so we can fix a delivery that went wrong.",
     ],
@@ -22,7 +23,7 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "3. Cookies & local storage",
     body: [
-      "Your entered username is kept in your browser's session storage and cleared when you close the browser — you re-enter it on your next visit.",
+      "Signing in sets one cookie that keeps you signed in for up to 7 days. It holds your Discord ID, username, avatar, email, and the edition you chose, signed so it cannot be edited. Signing out from the chip in the header deletes it.",
       "Cookies and similar storage are used to track activity on the website (such as pages visited and purchases started or completed) and to keep staff logged in to the admin panel.",
       "Stripe's checkout pages set their own cookies under Stripe's own privacy policy.",
     ],
@@ -36,13 +37,13 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "5. Skin lookups",
     body: [
-      "To show your player head on the site, the username you enter is sent to our server, which looks up your public skin through Mojang's API (Java) or the GeyserMC API (Bedrock). These lookups only involve information that is already public for every Minecraft account.",
+      "To show your player head on the site, your linked Minecraft username is sent to our server, which looks up your public skin through Mojang's API (Java) or the GeyserMC API (Bedrock). These lookups only involve information that is already public for every Minecraft account.",
     ],
   },
   {
     title: "6. Who we share it with",
     body: [
-      "Only the services that run the store: Stripe (payments), our hosting provider, and our database provider. Nothing is shared with anyone else, and nothing is ever sold.",
+      "Only the services that run the store: Discord (sign-in), Stripe (payments), our hosting provider, and our database provider. Nothing is shared with anyone else, and nothing is ever sold.",
     ],
   },
   {

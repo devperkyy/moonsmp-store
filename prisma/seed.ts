@@ -44,7 +44,7 @@ const packages = [
   {
     id: "moon-plus",
     name: "Moon+",
-    description: "The only rank with real benefits — perks and kits on top of the tag.",
+    description: "Real benefits — perks and kits on top of the tag.",
     category: "ranks",
     priceCents: 699,
     commandTemplate: "setrank {username} moon+",
@@ -53,7 +53,7 @@ const packages = [
   {
     id: "moon-plus-plus",
     name: "Moon++",
-    description: "The highest cosmetic supporter tag — above Moon+, with no extra gameplay perks.",
+    description: "Everything Moon+ gets, plus even more perks and kits on top.",
     category: "ranks",
     priceCents: 899,
     commandTemplate: "setrank {username} moon++",

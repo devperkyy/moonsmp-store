@@ -8,6 +8,7 @@
 # env
 .env
 .env*.local
+vercel-env.txt
 
 # misc
 .DS_Store
@@ -24,3 +25,6 @@ paper-plugin/target/
 # local dev database
 prisma/dev.db
 prisma/dev.db-journal
+
+.vercel
+.env*

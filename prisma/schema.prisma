@@ -34,6 +34,8 @@ model Order {
   platform          String // "java" | "bedrock"
   effectiveUsername String // normalized; "." Floodgate prefix applied for bedrock
   email             String?
+  // Set only when checkout went through Discord sign-in; null for
+  // legacy/kill-switch orders. See app/api/checkout/route.ts.
   discordId         String?
   discordUsername   String?
   quantity          Int        @default(1)

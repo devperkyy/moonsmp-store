@@ -17,7 +17,7 @@ export default async function RanksPage() {
     <div className="mx-auto max-w-6xl px-4 pt-14">
       <h1 className="mc-text-shadow font-pixel text-2xl text-white">Ranks</h1>
       <p className="mc-text-shadow mt-3 font-pixel text-[10px] leading-relaxed text-amber-300">
-        THESE ARE JUST RANK TAGS TO SUPPORT THE SERVER — ONLY MOON+ HAS BENEFITS
+        THESE ARE JUST RANK TAGS TO SUPPORT THE SERVER — ONLY MOON+ & MOON++ HAVE BENEFITS
       </p>
       <p className="mt-2 max-w-2xl text-slate-400">
         Permanent name tags for Java and Bedrock alike. 20% off right now.
