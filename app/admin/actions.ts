@@ -70,3 +70,24 @@ export async function retryDelivery(formData: FormData) {
   });
   revalidatePath("/admin");
 }
+
+// One username per line in the textarea → JSON array in the DB.
+export async function setMaintenanceMode(formData: FormData) {
+  await requireAdmin();
+  const enabled = formData.get("enabled") === "on";
+  const message = String(formData.get("message") ?? "").trim();
+  const allowlist = String(formData.get("allowlist") ?? "")
+    .split("\n")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  await prisma.maintenanceMode.upsert({
+    where: { id: 1 },
+    create: { id: 1, enabled, message, allowlist: JSON.stringify(allowlist) },
+    update: { enabled, message, allowlist: JSON.stringify(allowlist) },
+  });
+
+  // The gate is read in the root layout, so every route needs revalidating.
+  revalidatePath("/", "layout");
+  revalidatePath("/admin/maintenance");
+}

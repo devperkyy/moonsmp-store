@@ -7,12 +7,14 @@ import Footer from "@/components/Footer";
 import NightBackground from "@/components/NightBackground";
 import UsernameGate from "@/components/UsernameGate";
 import SignInGate from "@/components/SignInGate";
+import MaintenanceGate from "@/components/MaintenanceGate";
 import XpBar from "@/components/XpBar";
 import DayNightScroll from "@/components/DayNightScroll";
 import RankNotice from "@/components/RankNotice";
 import { discordAuthConfigured } from "@/lib/discord";
 import { getSession } from "@/lib/session";
 import { getLinkByDiscord } from "@/lib/moonlink";
+import { getMaintenanceState, isAllowedDuringMaintenance } from "@/lib/maintenance";
 
 const pixel = Press_Start_2P({
   weight: "400",
@@ -41,10 +43,24 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       // The link service being down should not crash public/legal/admin pages.
     }
   }
+
+  let maintenance = { enabled: false, message: "", allowlist: [] as string[] };
+  try {
+    maintenance = await getMaintenanceState();
+  } catch {
+    // No MaintenanceMode row / DB hiccup — default to open for business.
+  }
+  const maintenanceAllowed = isAllowedDuringMaintenance(maintenance, session?.discordUsername);
+
   return (
     <html lang="en" className={pixel.variable}>
       <body className="flex min-h-screen flex-col">
         <NightBackground />
+        <MaintenanceGate
+          enabled={maintenance.enabled}
+          message={maintenance.message}
+          allowed={maintenanceAllowed}
+        />
         {discordAuth ? (
           <SignInGate session={session} linkedPlayer={linkedPlayer} />
         ) : (

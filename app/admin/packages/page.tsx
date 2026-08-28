@@ -15,12 +15,20 @@ export default async function AdminPackagesPage() {
     <div className="mx-auto max-w-4xl px-4 pt-14">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-black text-white">Packages</h1>
-        <Link
-          href="/admin"
-          className="rounded-lg border border-night-600 bg-night-800 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-moon-500/60"
-        >
-          ← Orders
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/admin"
+            className="rounded-lg border border-night-600 bg-night-800 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-moon-500/60"
+          >
+            ← Orders
+          </Link>
+          <Link
+            href="/admin/maintenance"
+            className="rounded-lg border border-night-600 bg-night-800 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-moon-500/60"
+          >
+            Maintenance
+          </Link>
+        </div>
       </div>
       <p className="mt-2 text-sm text-slate-400">
         Command templates run as console commands on delivery. One command per line —{" "}
