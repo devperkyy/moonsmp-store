@@ -84,3 +84,15 @@ model DeliveryAttempt {
   response   String?
   createdAt  DateTime @default(now())
 }
+
+// Singleton (id always 1) toggled from /admin/maintenance. allowlist is a
+// JSON-encoded string array of Discord usernames — stored as a plain
+// String rather than a Prisma scalar list so this still works if a dev
+// switches the datasource to sqlite via `npm run db:local`.
+model MaintenanceMode {
+  id        Int      @id @default(1)
+  enabled   Boolean  @default(false)
+  message   String   @default("We're making some upgrades. Check back shortly!")
+  allowlist String   @default("[]")
+  updatedAt DateTime @updatedAt
+}

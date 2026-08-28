@@ -42,6 +42,12 @@ export default async function AdminOrdersPage() {
           >
             Edit packages
           </Link>
+          <Link
+            href="/admin/maintenance"
+            className="rounded-lg border border-night-600 bg-night-800 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-moon-500/60"
+          >
+            Maintenance
+          </Link>
           <form action={logout}>
             <button className="rounded-lg border border-night-600 px-4 py-2 text-sm text-slate-400 hover:text-white">
               Log out
