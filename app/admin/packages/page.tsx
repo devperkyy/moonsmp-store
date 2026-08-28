@@ -28,6 +28,12 @@ export default async function AdminPackagesPage() {
           >
             Maintenance
           </Link>
+          <Link
+            href="/admin/audit"
+            className="rounded-lg border border-night-600 bg-night-800 px-4 py-2 text-sm font-semibold text-slate-200 hover:border-moon-500/60"
+          >
+            Audit log
+          </Link>
         </div>
       </div>
       <p className="mt-2 text-sm text-slate-400">

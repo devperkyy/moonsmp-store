@@ -5,11 +5,21 @@ import { QUANTITY_OPTIONS } from "@/lib/format";
 import { discordAuthConfigured } from "@/lib/discord";
 import { getSession } from "@/lib/session";
 import { getLinkByDiscord } from "@/lib/moonlink";
+import { rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/client-ip";
 
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    const limit = rateLimit(`checkout:${clientIp()}`, 15, 60 * 1000);
+    if (!limit.ok) {
+      return NextResponse.json(
+        { error: "Too many requests — slow down and try again shortly." },
+        { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } },
+      );
+    }
+
     const { packageId, quantity: rawQuantity, username, platform } = await req.json();
     if (typeof packageId !== "string") {
       return NextResponse.json({ error: "packageId required" }, { status: 400 });

@@ -96,3 +96,15 @@ model MaintenanceMode {
   allowlist String   @default("[]")
   updatedAt DateTime @updatedAt
 }
+
+// One row per admin action — logins (successful and failed), package edits,
+// maintenance toggles, delivery retries. Viewed at /admin/audit.
+model AdminAuditLog {
+  id        String   @id @default(cuid())
+  action    String
+  detail    String   @default("")
+  ip        String   @default("")
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}

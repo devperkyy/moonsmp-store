@@ -34,6 +34,11 @@ export async function startCheckout(packageId: string, quantity: number): Promis
     throw new Error("Checkout succeeded but returned no URL");
   }
 
+  if (res.status === 429) {
+    alert("Too many requests — slow down and try again in a minute.");
+    return;
+  }
+
   const data = await res.json().catch(() => ({ error: null }));
   switch (data.error) {
     case "auth_required":

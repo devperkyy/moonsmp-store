@@ -15,10 +15,16 @@ export default function AdminLoginPage({
         className="rounded-2xl border border-night-600 bg-night-800/80 p-8 backdrop-blur"
       >
         <h1 className="text-xl font-black text-white">Admin</h1>
-        {searchParams.error && (
+        {searchParams.error === "2" ? (
           <p className="mt-3 rounded-md border border-red-800 bg-red-950/60 px-3 py-2 text-sm text-red-300">
-            Wrong password.
+            Too many attempts — try again in a few minutes.
           </p>
+        ) : (
+          searchParams.error && (
+            <p className="mt-3 rounded-md border border-red-800 bg-red-950/60 px-3 py-2 text-sm text-red-300">
+              Wrong password.
+            </p>
+          )
         )}
         <label className="mt-4 block text-sm font-medium text-slate-300">
           Password
