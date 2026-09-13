@@ -57,6 +57,9 @@ export async function startCheckout(packageId: string, quantity: number): Promis
       // Legacy mode, nothing (valid) in sessionStorage yet.
       openGate();
       return;
+    case "minecraft_account_not_found":
+      alert(data.message || "We couldn't find that Minecraft account. Check the name and edition, then try again.");
+      return;
     default:
       alert("Could not start checkout — please try again.");
   }

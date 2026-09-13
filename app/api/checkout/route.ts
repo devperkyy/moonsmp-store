@@ -7,6 +7,7 @@ import { getSession } from "@/lib/session";
 import { getLinkByDiscord } from "@/lib/moonlink";
 import { rateLimit } from "@/lib/rate-limit";
 import { clientIp } from "@/lib/client-ip";
+import { resolvePlayerUuid } from "@/lib/player-uuid";
 
 export const dynamic = "force-dynamic";
 
@@ -59,6 +60,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Unknown package" }, { status: 404 });
     }
 
+    const playerUuid = await resolvePlayerUuid(buyerUsername, buyerPlatform);
+    if (!playerUuid) {
+      return NextResponse.json(
+        {
+          error: "minecraft_account_not_found",
+          message: "We couldn't find that Minecraft account. Check the name and edition, then try again.",
+        },
+        { status: 400 },
+      );
+    }
+
     // Ranks are one-time purchases; only crates/keys sell in multiples.
     const quantity =
       pkg.category === "crates" && QUANTITY_OPTIONS.includes(rawQuantity)
@@ -89,6 +101,7 @@ export async function POST(req: Request) {
         platform: buyerPlatform,
         discordId,
         discordUsername,
+        playerUuid,
       },
       success_url: `${site}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${site}/${pkg.category === "ranks" ? "ranks" : "crates"}`,

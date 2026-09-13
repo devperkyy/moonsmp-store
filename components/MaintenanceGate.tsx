@@ -40,7 +40,7 @@ export default function MaintenanceGate({
         Re-enter admin →
       </Link>
       <div className="mc-panel w-full max-w-lg p-8 text-center">
-        <p className="text-2xl font-extrabold tracking-tight text-white">Moon SMP Store</p>
+        <p className="text-2xl font-extrabold tracking-tight text-white">Gilded SMP Store</p>
         <p className="mt-2 text-xs font-bold uppercase tracking-widest text-amber-300">
           Currently in maintenance
         </p>

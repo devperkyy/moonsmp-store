@@ -52,6 +52,7 @@ export async function POST(req: Request) {
   }
 
   const effectiveUsername = normalizeUsername(rawUsername, platform);
+  const playerUuid = session.metadata?.playerUuid || null;
   // e.g. 3x Vote Key = the key command runs 3 times (one Delivery row each)
   const quantity = Math.min(Math.max(parseInt(session.metadata?.quantity ?? "1", 10) || 1, 1), 10);
   const commands = Array.from({ length: quantity }, () =>
@@ -66,6 +67,7 @@ export async function POST(req: Request) {
         username: rawUsername,
         platform,
         effectiveUsername,
+        playerUuid,
         email: session.customer_details?.email ?? null,
         discordId: session.metadata?.discordId || null,
         discordUsername: session.metadata?.discordUsername || null,

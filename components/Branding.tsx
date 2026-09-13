@@ -20,7 +20,7 @@ export function Logo({ className = "h-10 w-auto" }: { className?: string }) {
   if (!ok) {
     return (
       <span className="mc-text-shadow font-pixel text-xs tracking-widest">
-        <span className="text-slate-100">MOON</span>{" "}
+        <span className="text-slate-100">GILDED</span>{" "}
         <span className="text-moon-500">SMP</span>
       </span>
     );
@@ -30,7 +30,7 @@ export function Logo({ className = "h-10 w-auto" }: { className?: string }) {
     <img
       ref={ref}
       src="/branding/logo.png"
-      alt="Moon SMP"
+      alt="Gilded SMP"
       className={className}
       style={{ imageRendering: "pixelated" }}
       onError={fail}
@@ -46,7 +46,7 @@ export function Banner() {
     <img
       ref={ref}
       src="/branding/banner.png"
-      alt="Moon SMP — a pixel village at night"
+      alt="Gilded SMP — a pixel village at night"
       className="mx-auto w-full max-w-3xl rounded-xl border border-night-600 shadow-2xl shadow-black/60"
       style={{ imageRendering: "pixelated" }}
       onError={fail}

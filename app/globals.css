@@ -119,7 +119,7 @@ body {
   transition: border-color 0.15s;
 }
 .mc-input:focus {
-  border-color: #6b8cff;
+  border-color: #eab308;
 }
 
 /* ── scroll XP bar ── */

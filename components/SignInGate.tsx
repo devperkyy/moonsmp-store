@@ -59,7 +59,7 @@ export default function SignInGate({
     <div className="fixed inset-0 z-50 flex min-h-screen items-center justify-center overflow-y-auto bg-night-950/55 p-4 backdrop-blur-md">
       {!session ? (
         <div className="mc-panel w-full max-w-xl p-8 text-center">
-          <p className="text-2xl font-extrabold tracking-tight text-white">Moon SMP Store</p>
+          <p className="text-2xl font-extrabold tracking-tight text-white">Gilded SMP Store</p>
           <p className="mt-5 text-sm leading-relaxed text-slate-300">
             Sign in with Discord to verify your identity before entering the store.
           </p>

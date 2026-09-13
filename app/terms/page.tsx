@@ -7,13 +7,13 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "1. Who we are",
     body: [
-      "This store is operated by the Moon SMP Minecraft server team. We sell digital in-game perks (ranks, crate keys, and similar items) for the Moon SMP server. We are not affiliated with, endorsed by, or associated with Mojang Studios or Microsoft in any way.",
+      "This store is operated by the Gilded SMP Minecraft server team. We sell digital in-game perks (ranks, crate keys, and similar items) for the Gilded SMP server. We are not affiliated with, endorsed by, or associated with Mojang Studios or Microsoft in any way.",
     ],
   },
   {
     title: "2. Digital goods & delivery",
     body: [
-      "Everything sold here is a digital item delivered inside the Moon SMP Minecraft server. Nothing physical is shipped.",
+      "Everything sold here is a digital item delivered inside the Gilded SMP Minecraft server. Nothing physical is shipped.",
       "Purchases are delivered automatically to the Minecraft account linked to the Discord account you signed in with, as confirmed by you when you entered this website. It is your responsibility to make sure that link points at the account (Java or Bedrock) you actually play on — ask a staff member to unlink it before buying if it does not. Items delivered to an incorrectly linked account cannot be recovered.",
       "Delivery normally completes within a few minutes of payment. If the server is offline or restarting, your purchase is queued and delivered automatically as soon as the server is back. If you have not received a purchase within 24 hours, open a ticket in our Discord and we will look at the delivery log for your order.",
     ],
@@ -31,14 +31,14 @@ const sections: { title: string; body: string[] }[] = [
     body: [
       "Because everything sold here is a digital item delivered immediately, all sales are final and non-refundable, except where a refund is required by law.",
       "If something went wrong with a delivery, contact us in Discord first — we can re-run failed deliveries and we want to make it right.",
-      "Opening a chargeback or payment dispute without contacting us first may result in a permanent ban of the associated Minecraft account from Moon SMP.",
+      "Opening a chargeback or payment dispute without contacting us first may result in a permanent ban of the associated Minecraft account from Gilded SMP.",
     ],
   },
   {
     title: "5. Server rules still apply",
     body: [
       "Buying a rank or any other package does not exempt you from the server rules. If your account is banned or punished for breaking the rules, you are not entitled to a refund for any purchases, and perks are not transferable to another account.",
-      "Perks apply on the Moon SMP server only and may be adjusted, rebalanced, or reworked over time to keep the server fair and fun.",
+      "Perks apply on the Gilded SMP server only and may be adjusted, rebalanced, or reworked over time to keep the server fair and fun.",
     ],
   },
   {
@@ -57,7 +57,7 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "8. Contact",
     body: [
-      "For any question about a purchase, a delivery, or these terms, open a ticket in the Moon SMP Discord server.",
+      "For any question about a purchase, a delivery, or these terms, open a ticket in the Gilded SMP Discord server.",
     ],
   },
 ];

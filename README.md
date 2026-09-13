@@ -1,26 +1,29 @@
-# Moon SMP Store
+# Gilded SMP Store
 
-Custom webstore for Moon SMP (Paper 1.21 + Geyser/Floodgate), replacing CraftingStore/Tebex.
+Custom webstore for Gilded SMP (Paper 1.21.11 + Geyser/Floodgate), replacing CraftingStore/Tebex.
 Next.js 14 App Router · Tailwind · Prisma/Postgres · Stripe Checkout (CAD) · queue-based
-in-game delivery via the bundled **MoonDeliveries** Paper plugin.
+in-game delivery via the bundled **GildedDeliveries** Paper plugin.
 
 ## How delivery works
 
 ```
-Buyer → Stripe Checkout (username + edition collected there)
+Buyer → linked Minecraft name is resolved to a verified Java/Floodgate UUID
+      → Stripe Checkout opens only after that lookup succeeds
       → webhook: checkout.session.completed
       → Order + Delivery rows written to Postgres (status: pending)
-      → MoonDeliveries plugin polls GET /api/plugin/deliveries every 10s
-      → runs each command in console, POSTs success/fail back
+      → GildedDeliveries sends the UUIDs/names of players online on this server
+      → store atomically claims only matching deliveries for this server
+      → plugin re-verifies the player and GildedSync load state on the main thread
+      → writes the delivery id to executed.yml, runs it once, and reports with its claim token
       → every attempt is logged (DeliveryAttempt) for "I paid but got nothing" tickets
 ```
 
 **Why polling instead of RCON:** the store never needs to reach your Minecraft server.
 If the server is offline/restarting when someone pays, the delivery just waits in the
-queue and lands on the next poll after boot. No RCON port exposed to the internet, no
-RCON password in Vercel. Tradeoff: up to `poll-seconds` of delay (default 10s).
-Deliveries are at-least-once: if the plugin executes a command but crashes before
-reporting back, the row is re-offered after 5 minutes.
+queue and lands after that player joins. No RCON port is exposed and no RCON password
+is stored in Vercel. The local `executed.yml` ledger prevents a crash from running a
+command twice. Claims older than 10 minutes become `needs_review` and require an admin
+decision; they are never automatically offered again.
 
 ## Setup
 
@@ -65,7 +68,7 @@ npm run db:seed   # insert the 6 packages (placeholder prices)
    `/admin` with a `pending` delivery.
 
 Production: **Developers → Webhooks → Add endpoint** →
-`https://store.moonsmp.org/api/stripe/webhook`, event `checkout.session.completed`,
+`https://store.gildedsmp.net/api/stripe/webhook`, event `checkout.session.completed`,
 and use that endpoint's signing secret + your live `sk_live_…` key in Vercel env vars.
 
 ### 3. Admin panel
@@ -79,15 +82,17 @@ placeholder).
 
 ```bash
 cd paper-plugin
-mvn package        # → target/MoonDeliveries.jar
+mvn package        # → target/GildedDeliveries.jar
 ```
 
-Drop the jar in `plugins/`, restart once, then edit `plugins/MoonDeliveries/config.yml`:
+Drop the jar in `plugins/`, restart once, then edit `plugins/GildedDeliveries/config.yml`:
 
 ```yaml
-api-url: "https://store.moonsmp.org"
+api-url: "https://store.gildedsmp.net"
 api-key: "<same value as PLUGIN_API_KEY in Vercel>"
-poll-seconds: 10
+server-id: "na" # use "eu" on the EU server
+poll-seconds: 30
+join-delay-seconds: 5
 ```
 
 Generate the shared key with
@@ -105,10 +110,10 @@ least once.
 
 1. Push this repo to GitHub, import it in Vercel.
 2. Set every variable from `.env.example` in **Project → Settings → Environment
-   Variables** (`NEXT_PUBLIC_SITE_URL=https://store.moonsmp.org`).
-3. **Project → Settings → Domains** → add `store.moonsmp.org`, point your DNS CNAME at
+   Variables** (`NEXT_PUBLIC_SITE_URL=https://store.gildedsmp.net`).
+3. **Project → Settings → Domains** → add `store.gildedsmp.net`, point your DNS CNAME at
    `cname.vercel-dns.com`.
-4. Run `npm run db:push && npm run db:seed` once against the production `DATABASE_URL`.
+4. Apply this repository's production migration with `npx prisma migrate deploy`.
 
 ### Branding & background
 

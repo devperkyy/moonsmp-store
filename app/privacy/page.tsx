@@ -8,7 +8,7 @@ const sections: { title: string; body: string[] }[] = [
     title: "1. What we collect",
     body: [
       "When you sign in with Discord: your Discord user ID, username, avatar, and the email address on your Discord account. Discord shows you exactly this list on its own consent screen before anything is shared, and you can decline there.",
-      "The Minecraft account linked to your Discord account, which we read from the Moon SMP bot so your purchases reach the right player, plus the edition (Java or Bedrock) you confirm when you enter this website.",
+      "The Minecraft account linked to your Discord account, which we read from the Gilded SMP bot so your purchases reach the right player, plus the edition (Java or Bedrock) you confirm when you enter this website. Before checkout, we look up and store that account's Minecraft UUID so delivery can be verified safely.",
       "When you buy something: the package, price, and quantity you bought, a Stripe payment reference, and the email address you give Stripe at checkout (used for your receipt and for support).",
       "Delivery records: the in-game command that ran for your purchase, whether it succeeded, and when. We keep these so we can fix a delivery that went wrong.",
     ],
@@ -17,7 +17,7 @@ const sections: { title: string; body: string[] }[] = [
     title: "2. How we use it",
     body: [
       "To deliver what you bought to your Minecraft account, to answer support tickets (for example “I paid but got nothing”), and to prevent fraud and abuse of the store.",
-      "We do not sell your information, show you ads, or use it for anything unrelated to running the Moon SMP store.",
+      "We do not sell your information, show you ads, or use it for anything unrelated to running the Gilded SMP store.",
     ],
   },
   {
@@ -49,7 +49,7 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "7. How long we keep it",
     body: [
-      "Order and delivery records are kept so we can handle support requests and keep basic accounting. If you want your data removed, open a ticket in the Moon SMP Discord and we will delete what we are not legally required to keep.",
+      "Order and delivery records are kept so we can handle support requests and keep basic accounting. If you want your data removed, open a ticket in the Gilded SMP Discord and we will delete what we are not legally required to keep.",
     ],
   },
   {
@@ -61,7 +61,7 @@ const sections: { title: string; body: string[] }[] = [
   {
     title: "9. Changes & contact",
     body: [
-      "We may update this policy from time to time; the current version is always on this page. Questions? Open a ticket in the Moon SMP Discord server.",
+      "We may update this policy from time to time; the current version is always on this page. Questions? Open a ticket in the Gilded SMP Discord server.",
     ],
   },
 ];

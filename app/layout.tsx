@@ -24,12 +24,17 @@ const pixel = Press_Start_2P({
 
 export const metadata: Metadata = {
   title: {
-    default: "Moon SMP Store",
-    template: "%s · Moon SMP Store",
+    default: "Gilded SMP Store",
+    template: "%s · Gilded SMP Store",
   },
   description:
-    "Support Moon SMP — ranks, crate keys and more, delivered in-game automatically. Java + Bedrock.",
+    "Support Gilded SMP — ranks, crate keys and more, delivered in-game automatically. Java + Bedrock.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  openGraph: {
+    title: "Gilded SMP Store",
+    description: "Support Gilded SMP with ranks, crate keys, and automatic in-game delivery.",
+    type: "website",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

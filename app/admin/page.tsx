@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
 import { formatPrice } from "@/lib/format";
-import { logout, retryDelivery } from "./actions";
+import { logout, markDeliveryDelivered, retryDelivery } from "./actions";
 
 export const metadata: Metadata = { title: "Admin · Orders" };
 export const dynamic = "force-dynamic";
@@ -12,6 +12,15 @@ const statusStyles: Record<string, string> = {
   processing: "bg-blue-950/60 text-blue-300 border-blue-800",
   delivered: "bg-green-950/60 text-green-300 border-green-800",
   failed: "bg-red-950/60 text-red-300 border-red-800",
+  needs_review: "bg-orange-950/60 text-orange-300 border-orange-800",
+};
+
+const statusLabels: Record<string, string> = {
+  pending: "Waiting for player",
+  processing: "Delivering",
+  delivered: "Delivered",
+  failed: "Failed",
+  needs_review: "Needs review",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -19,12 +28,23 @@ function StatusBadge({ status }: { status: string }) {
     <span
       className={`inline-block rounded border px-2 py-0.5 text-xs font-semibold ${statusStyles[status] ?? "border-slate-700 bg-slate-900 text-slate-300"}`}
     >
-      {status}
+      {statusLabels[status] ?? status}
     </span>
   );
 }
 
 export default async function AdminOrdersPage() {
+  await prisma.delivery.updateMany({
+    where: {
+      status: "processing",
+      claimedAt: { lt: new Date(Date.now() - 10 * 60 * 1000) },
+    },
+    data: {
+      status: "needs_review",
+      lastError: "Claim exceeded 10 minutes; automatic replay is disabled.",
+    },
+  });
+
   const orders = await prisma.order.findMany({
     orderBy: { createdAt: "desc" },
     take: 50,
@@ -102,14 +122,32 @@ export default async function AdminOrdersPage() {
                   <span className="text-xs text-slate-500">
                     {d.attempts} attempt{d.attempts === 1 ? "" : "s"}
                   </span>
+                  {d.claimedBy && (
+                    <span className="text-xs text-slate-500">
+                      {d.status === "delivered" ? "Delivered" : "Claimed"} by {d.claimedBy}
+                      {d.executedAt
+                        ? ` · ${d.executedAt.toLocaleString("en-CA")}`
+                        : d.claimedAt
+                          ? ` · ${d.claimedAt.toLocaleString("en-CA")}`
+                          : ""}
+                    </span>
+                  )}
                   {d.lastError && (
                     <span className="w-full text-xs text-red-400">↳ {d.lastError}</span>
                   )}
-                  {(d.status === "failed" || d.status === "processing") && (
+                  {(d.status === "failed" || d.status === "needs_review") && (
                     <form action={retryDelivery}>
                       <input type="hidden" name="id" value={d.id} />
                       <button className="rounded bg-moon-500 px-3 py-1 text-xs font-bold text-night-950 hover:bg-moon-400">
                         Retry
+                      </button>
+                    </form>
+                  )}
+                  {d.status === "needs_review" && (
+                    <form action={markDeliveryDelivered}>
+                      <input type="hidden" name="id" value={d.id} />
+                      <button className="rounded border border-green-700 px-3 py-1 text-xs font-bold text-green-300 hover:bg-green-950/60">
+                        Mark delivered
                       </button>
                     </form>
                   )}

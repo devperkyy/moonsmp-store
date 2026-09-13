@@ -40,7 +40,7 @@ export default function HomePage() {
       <section className="pt-16 text-center sm:pt-24">
         <Banner />
         <h1 className="mt-10 text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-6xl">
-          Moon SMP <span className="bg-gradient-to-r from-moon-300 to-moon-500 bg-clip-text text-transparent">Store</span>
+          Gilded SMP <span className="bg-gradient-to-r from-moon-300 to-moon-500 bg-clip-text text-transparent">Store</span>
         </h1>
         <p className="mx-auto mt-5 max-w-xl text-slate-300">
           Support the server and get something shiny back. Every purchase is delivered

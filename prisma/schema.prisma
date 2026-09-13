@@ -33,6 +33,7 @@ model Order {
   username          String // as typed by the buyer
   platform          String // "java" | "bedrock"
   effectiveUsername String // normalized; "." Floodgate prefix applied for bedrock
+  playerUuid       String? // verified Java/Floodgate UUID; null only on legacy orders
   email             String?
   // Set only when checkout went through Discord sign-in; null for
   // legacy/kill-switch orders. See app/api/checkout/route.ts.
@@ -44,6 +45,8 @@ model Order {
   status            String     @default("paid")
   createdAt         DateTime   @default(now())
   deliveries        Delivery[]
+
+  @@index([playerUuid])
 }
 
 // One row per rendered command. The Paper plugin claims pending rows,
@@ -53,15 +56,18 @@ model Delivery {
   orderId     String
   order       Order             @relation(fields: [orderId], references: [id])
   command     String
-  status      String            @default("pending") // pending | processing | delivered | failed
+  status      String            @default("pending") // pending | processing | delivered | failed | needs_review
   attempts    Int               @default(0)
   claimedAt   DateTime?
+  claimedBy   String?
+  claimToken  String?
   executedAt  DateTime?
   lastError   String?
   createdAt   DateTime          @default(now())
   attemptLogs DeliveryAttempt[]
 
   @@index([status, createdAt])
+  @@index([claimToken])
 }
 
 // Storefront reviews shown on package detail pages.

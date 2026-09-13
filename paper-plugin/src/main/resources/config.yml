@@ -1,8 +1,14 @@
 # Base URL of the webstore (no trailing slash).
-api-url: "https://store.moonsmp.org"
+api-url: "https://store.gildedsmp.net"
 
 # Must match PLUGIN_API_KEY in the webstore's environment variables.
 api-key: "changeme"
 
-# How often to check for new deliveries, in seconds.
-poll-seconds: 10
+# Must be different on every Minecraft server (for example: na and eu).
+server-id: "change-me"
+
+# How often to check all online players as a backup.
+poll-seconds: 30
+
+# Minimum wait after join. GildedSync's loaded state is checked as well.
+join-delay-seconds: 5

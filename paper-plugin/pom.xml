@@ -4,11 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.moonsmp</groupId>
-  <artifactId>moon-deliveries</artifactId>
+  <groupId>net.gildedsmp</groupId>
+  <artifactId>gilded-deliveries</artifactId>
   <version>1.0.0</version>
   <packaging>jar</packaging>
-  <name>MoonDeliveries</name>
+  <name>GildedDeliveries</name>
 
   <properties>
     <maven.compiler.release>21</maven.compiler.release>
@@ -27,12 +27,12 @@
     <dependency>
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.21.1-R0.1-SNAPSHOT</version>
+      <version>1.21.11-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
 
   <build>
-    <finalName>MoonDeliveries</finalName>
+    <finalName>GildedDeliveries</finalName>
   </build>
 </project>

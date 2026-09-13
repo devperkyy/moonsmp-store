@@ -116,7 +116,7 @@ export default function UsernameGate() {
         {/* step 1: username */}
         <div className="mc-panel p-8">
           <h1 className="text-2xl font-extrabold tracking-tight text-white">
-            Moon <span className="text-moon-400">SMP</span>
+            Gilded <span className="text-moon-400">SMP</span>
           </h1>
           <p className="mt-3 text-sm text-slate-300">
             Enter your Minecraft username to browse the store. Ranks and keys are

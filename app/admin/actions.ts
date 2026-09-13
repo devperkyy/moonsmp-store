@@ -75,15 +75,41 @@ export async function updatePackage(formData: FormData) {
   revalidatePath("/crates");
 }
 
-// Re-queue a failed (or stuck) delivery — the plugin picks it up on its next poll.
+// Re-queue only after an admin has decided it is safe to run the command again.
 export async function retryDelivery(formData: FormData) {
   await requireAdmin();
   const id = String(formData.get("id"));
   await prisma.delivery.update({
     where: { id },
-    data: { status: "pending", claimedAt: null, lastError: null },
+    data: {
+      status: "pending",
+      claimedAt: null,
+      claimedBy: null,
+      claimToken: null,
+      executedAt: null,
+      lastError: null,
+    },
   });
   await logAdminAction("delivery_retry", id);
+  revalidatePath("/admin");
+}
+
+export async function markDeliveryDelivered(formData: FormData) {
+  await requireAdmin();
+  const id = String(formData.get("id"));
+  await prisma.delivery.update({
+    where: { id },
+    data: {
+      status: "delivered",
+      executedAt: new Date(),
+      claimedBy: "admin",
+      lastError: null,
+      attemptLogs: {
+        create: { success: true, response: "Manually marked delivered by an administrator." },
+      },
+    },
+  });
+  await logAdminAction("delivery_mark_delivered", id);
   revalidatePath("/admin");
 }
 
