@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "node scripts/gen-sprites.mjs && node scripts/set-db.mjs postgres && prisma generate && next build",
+    "vercel-build": "node scripts/vercel-build.mjs",
     "gen:sprites": "node scripts/gen-sprites.mjs",
     "start": "next start",
     "lint": "next lint",
