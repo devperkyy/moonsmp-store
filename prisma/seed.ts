@@ -43,7 +43,7 @@ const packages = [
   },
   {
     id: "moon-plus",
-    name: "Moon+",
+    name: "Gilded+",
     description: "Real benefits — perks and kits on top of the tag.",
     category: "ranks",
     priceCents: 699,
@@ -52,8 +52,8 @@ const packages = [
   },
   {
     id: "moon-plus-plus",
-    name: "Moon++",
-    description: "Everything Moon+ gets, plus even more perks and kits on top.",
+    name: "Gilded++",
+    description: "Everything Gilded+ gets, plus even more perks and kits on top.",
     category: "ranks",
     priceCents: 899,
     commandTemplate: "setrank {username} moon++",
@@ -100,8 +100,8 @@ const packages = [
   },
   {
     id: "moon-crate",
-    name: "Moon Crate",
-    description: "One key for the Moon Crate — the top tier.",
+    name: "Gilded Crate",
+    description: "One key for the Gilded Crate — the top tier.",
     category: "crates",
     priceCents: 1099,
     commandTemplate: "crate key add Moon {username} 1",

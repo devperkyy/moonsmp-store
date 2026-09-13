@@ -16,7 +16,7 @@ export default async function RanksPage() {
       <h1 className="text-4xl font-extrabold tracking-tight text-white">Ranks</h1>
       <p className="mt-3 max-w-2xl text-slate-400">
         Permanent name tags for Java and Bedrock alike — just rank tags to support the server,
-        only Moon+ &amp; Moon++ carry benefits. 20% off right now.
+        only Gilded+ &amp; Gilded++ carry benefits. 20% off right now.
       </p>
       <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {packages.map((pkg) => (

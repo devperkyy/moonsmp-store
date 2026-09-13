@@ -5,7 +5,7 @@ const categories = [
   {
     href: "/ranks",
     title: "Ranks",
-    blurb: "Star, Starstruck, Moon+ and Asteroid — perks that last forever.",
+    blurb: "Star, Starstruck, Gilded+ and Asteroid — perks that last forever.",
   },
   {
     href: "/crates",
